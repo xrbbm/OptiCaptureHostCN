@@ -51,6 +51,7 @@
 #include <cwchar>
 #include <cwctype>
 #include <fstream>
+#include <format>
 #include <mutex>
 #include <cmath>
 #include <string>
@@ -63,6 +64,7 @@
 #include "nis_shader.h"
 #include "nis_config.h"
 #include "fsr_flow_shader.h"
+#include "ui_strings.h"
 #include "ffx_api/ffx_api.h"
 #include "ffx_api/ffx_upscale.h"
 #include "ffx_api/ffx_api_loader.h"
@@ -72,6 +74,8 @@
 #include "nvsdk_ngx_defs.h"
 #include "nvsdk_ngx_params.h"
 #endif
+
+namespace ui = oc::ui;
 
 #pragma comment(lib, "d3dcompiler.lib")
 #pragma comment(lib, "winmm.lib")
@@ -1078,12 +1082,12 @@ void Host::CreateLabel()
     mi.cbSize = sizeof(mi);
     if (!GetMonitorInfoW(MonitorFromWindow(target_, MONITOR_DEFAULTTONEAREST), &mi))
         return;
-    static const wchar_t* names[] = { L"", L"bilinear", L"FSR 1", L"NIS", L"FSR3/4", L"DLSS" };
+    static const wchar_t* names[] = { L"", ui::HostOverlayBilinear, L"FSR 1", L"NIS", L"FSR3/4", L"DLSS" };
     wchar_t text[64];
     labelH_ = height_;
-    static const wchar_t* const lvNames[] = { L"Quality", L"Balanced", L"Performance", L"Native" };
-    swprintf(text, 64, L"%u to %u  (%s \u00B7 %s)", height_, outH_, names[(upMethod_ >= 0 && upMethod_ <= 5) ? upMethod_ : 0],
-             lvNames[(st_.upscaleLevel >= 0 && st_.upscaleLevel <= 3) ? st_.upscaleLevel : 0]);
+    static const wchar_t* const lvNames[] = { ui::HostOverlayQuality, ui::HostOverlayBalanced, ui::HostOverlayPerformance, ui::HostOverlayNative };
+    *std::format_to_n(text, 63, ui::HostOverlayLabel, height_, outH_, names[(upMethod_ >= 0 && upMethod_ <= 5) ? upMethod_ : 0],
+                      lvNames[(st_.upscaleLevel >= 0 && st_.upscaleLevel <= 3) ? st_.upscaleLevel : 0]).out = L'\0';
     label_ = CreateWindowExW(WS_EX_TOPMOST | WS_EX_TOOLWINDOW | WS_EX_NOACTIVATE | WS_EX_LAYERED | WS_EX_TRANSPARENT, wc.lpszClassName,
                              text, WS_POPUP, mi.rcMonitor.left + 16, mi.rcMonitor.top + 16, 400, 40, nullptr, nullptr, inst_, nullptr);
     if (!label_)
@@ -1101,12 +1105,12 @@ void Host::UpdateLabel()
     {
         if (label_)
         {
-            static const wchar_t* names[] = { L"", L"bilinear", L"FSR 1", L"NIS", L"FSR3/4", L"DLSS" };
+            static const wchar_t* names[] = { L"", ui::HostOverlayBilinear, L"FSR 1", L"NIS", L"FSR3/4", L"DLSS" };
             wchar_t text[64];
             labelH_ = height_;
-            static const wchar_t* const lvNames[] = { L"Quality", L"Balanced", L"Performance", L"Native" };
-    swprintf(text, 64, L"%u to %u  (%s \u00B7 %s)", height_, outH_, names[(upMethod_ >= 0 && upMethod_ <= 5) ? upMethod_ : 0],
-             lvNames[(st_.upscaleLevel >= 0 && st_.upscaleLevel <= 3) ? st_.upscaleLevel : 0]);
+            static const wchar_t* const lvNames[] = { ui::HostOverlayQuality, ui::HostOverlayBalanced, ui::HostOverlayPerformance, ui::HostOverlayNative };
+            *std::format_to_n(text, 63, ui::HostOverlayLabel, height_, outH_, names[(upMethod_ >= 0 && upMethod_ <= 5) ? upMethod_ : 0],
+                              lvNames[(st_.upscaleLevel >= 0 && st_.upscaleLevel <= 3) ? st_.upscaleLevel : 0]).out = L'\0';
             SetWindowTextW(label_, text);
             InvalidateRect(label_, nullptr, TRUE);
             labelUntil_ = std::chrono::steady_clock::now() + std::chrono::seconds(st_.labelSeconds);
@@ -3248,14 +3252,14 @@ int Host::Run(const Options& opt, const oc::Settings& settings)
 
     if (!wgc::GraphicsCaptureSession::IsSupported())
     {
-        Fail(L"Windows Graphics Capture is not supported on this system (Windows 10 1903 or newer is required).");
+        Fail(ui::WindowsGraphicsCaptureUnsupported);
         return 1;
     }
 
     target_ = PickTarget(opt_);
     if (!target_)
     {
-        Fail(L"No window to capture. Use --title \"part of the window title\", or switch to the game during the countdown.");
+        Fail(ui::NoCaptureWindow);
         return 1;
     }
     Log("Target window: \"%s\"", Narrow(WindowTitle(target_)).c_str());
@@ -3264,7 +3268,7 @@ int Host::Run(const Options& opt, const oc::Settings& settings)
 
     if (!InitGraphics() || !InitCapture() || !InitOverlayAndSwapChain())
     {
-        Fail(L"Initialisation failed. See OptiCaptureHost.log next to the exe.");
+        Fail(ui::CaptureInitializationFailed);
         Shutdown();
         return 1;
     }
@@ -3838,13 +3842,13 @@ int WINAPI wWinMain(HINSTANCE, HINSTANCE, PWSTR, int)
     catch (const winrt::hresult_error& e)
     {
         Log("Exception: 0x%08X %s", static_cast<unsigned>(e.code().value), Narrow(std::wstring(e.message().c_str())).c_str());
-        Fail(L"Unexpected error. See OptiCaptureHost.log next to the exe.");
+        Fail(ui::UnexpectedHostError);
         return 1;
     }
     catch (const std::exception& e)
     {
         Log("Exception: %s", e.what());
-        Fail(L"Unexpected error. See OptiCaptureHost.log next to the exe.");
+        Fail(ui::UnexpectedHostError);
         return 1;
     }
 }

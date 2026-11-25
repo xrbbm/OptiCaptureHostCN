@@ -1,0 +1,8 @@
+{
+  "name": "opticapturehost-i18n",
+  "private": true,
+  "dependencies": {
+    "@huggingface/transformers": "3.8.1",
+    "opencc-js": "1.4.2"
+  }
+}

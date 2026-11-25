@@ -25,6 +25,7 @@
 #include <cstdlib>
 #include <cstring>
 #include <cwchar>
+#include <format>
 #include <memory>
 #include <string>
 #include <vector>
@@ -36,10 +37,12 @@ using std::min;
 
 #include "settings.h"
 #include "version.h"
+#include "ui_strings.h"
 
 #pragma comment(lib, "advapi32.lib")
 
 namespace gp = Gdiplus;
+namespace ui = oc::ui;
 
 namespace
 {
@@ -117,17 +120,17 @@ constexpr int kIdProfileLoad = 38;
 constexpr int kIdPreset0 = 40; // 40..46: quick modes NO FG, x2 / x3 / x4 (new GPU: Intel MFG), x2 / x3 / x4 (old GPU: Artur)
 constexpr int kUpMenuBase = 5900;
 const wchar_t* const kFgNames[11] = {
-    L"Intel MFG (xell/new GPU)",         // 0
-    L"Artur MFG (old/new GPU)",          // 1
-    L"NO FG",                            // 2
-    L"Intel MFG (xell/new GPU)",         // 3 (old "FSR Frame Generation" entry, removed: shown as 0)
-    L"Intel FG (xell/new GPU)",            // 4 (folder "intel FG")
-    L"Combo MFG (old/new GPU)",          // 5
-    L"Nukem FG (old/new GPU)",           // 6
-    L"FSR3-4 FG (old/new GPU)",          // 7
-    L"Nvidia MFG (RTX Only)",            // 8
-    L"FSR FG (AntiLag2/rdna2.3.4)",      // 9  folder "FSR FG AL2"
-    L"FSR FG (latency flex/old/new GPU)" // 10 folder "FSR FG LF"
+    ui::IntelMfgXellNewGpu,         // 0
+    ui::ArturMfgOldNewGpu,          // 1
+    ui::NoFg,                            // 2
+    ui::IntelMfgXellNewGpu,         // 3 (old "FSR Frame Generation" entry, removed: shown as 0)
+    ui::IntelFgXellNewGpu,            // 4 (folder "intel FG")
+    ui::ComboMfgOldNewGpu,          // 5
+    ui::NukemFgOldNewGpu,           // 6
+    ui::Fsr34FgOldNewGpu,          // 7
+    ui::NvidiaMfgRtxOnly,            // 8
+    ui::FsrFgAntilag2Rdna234,      // 9  folder "FSR FG AL2"
+    ui::FsrFgLatencyFlexOldNewGpu // 10 folder "FSR FG LF"
 };
 // menu order -> mode
 const int kFgMenuOrder[10] = { 0, 1, 5, 9, 10, 6, 7, 8, 4, 2 };
@@ -398,12 +401,12 @@ struct ShortcutDef
 };
 
 const ShortcutDef kShortcutDefs[kScCount] = {
-    { L"OptiScaler menu", L"Open / close the menu" },
-    { L"FPS overlay", L"Show / hide it" },
-    { L"Overlay type", L"Change what it shows" },
-    { L"Frame generation", L"Turn it on / off" },
-    { L"Stop capture", L"Close the capture host" },
-    { L"This window", L"Bring the launcher on top" },
+    { ui::OptiscalerMenu, ui::OpenCloseTheMenu },
+    { ui::FpsOverlay, ui::ShowHideIt },
+    { ui::OverlayType, ui::ChangeWhatItShows },
+    { ui::FrameGeneration, ui::TurnItOnOff },
+    { ui::StopCapture, ui::CloseTheCaptureHost },
+    { ui::ThisWindow, ui::BringTheLauncherOnTop },
 };
 
 struct EnumCtx
@@ -775,7 +778,7 @@ enum Warn
 };
 
 const wchar_t* const kWarnKeys[kWarnCount] = { L"HideRtssMissing", L"HideProfile" }; // OptiCaptureHost.ini [Warnings]
-const wchar_t* const kWarnTitles[kWarnCount] = { L"RivaTuner (RTSS) is not installed", L"Saved game profile found" };
+const wchar_t* const kWarnTitles[kWarnCount] = { ui::RivatunerRtssIsNotInstalled, ui::SavedGameProfileFound };
 
 // Folder of the running RivaTuner Statistics Server, with a trailing backslash (empty when it is not running).
 std::wstring RtssDir()
@@ -1022,11 +1025,11 @@ LimiterOut DoLimiterImpl(RtssApi& api, const oc::Settings& st, const std::wstrin
         if (st.limitTarget != 0)
         {
             out.code = 2;
-            out.note = L"RivaTuner (RTSS) is not installed.";
+            out.note = ui::RivatunerRtssIsNotInstalled2;
             return out;
         }
-        out.info = L"Limiter off.";
-        out.note = L"Frame limiter is off.";
+        out.info = ui::LimiterOff;
+        out.note = ui::FrameLimiterIsOff;
         return out;
     }
 
@@ -1064,15 +1067,15 @@ LimiterOut DoLimiterImpl(RtssApi& api, const oc::Settings& st, const std::wstrin
         for (const std::string& n : names)
             allOk = api.Write(n, 0, 1, api.Read(n, "SyncLimiter", 0)) && allOk;
         WritePrivateProfileStringW(L"Rtss", L"Has", L"0", ini.c_str());
-        out.info = L"Limiter off.";
+        out.info = ui::LimiterOff;
         if (allOk)
         {
-            out.note = L"Frame limiter is off (limit set to 0).";
+            out.note = ui::FrameLimiterIsOffLimitSetTo;
         }
         else
         {
             out.code = 1;
-            out.note = L"RTSS did not take the change.";
+            out.note = ui::RtssDidNotTakeTheChange;
         }
         return out;
     }
@@ -1116,8 +1119,8 @@ LimiterOut DoLimiterImpl(RtssApi& api, const oc::Settings& st, const std::wstrin
 
     if (st.limitTarget == 0)
     {
-        out.info = L"Limiter off.";
-        out.note = L"Frame limiter is off.";
+        out.info = ui::LimiterOff;
+        out.note = ui::FrameLimiterIsOff;
         return out;
     }
 
@@ -1128,7 +1131,7 @@ LimiterOut DoLimiterImpl(RtssApi& api, const oc::Settings& st, const std::wstrin
         if (gameExe.empty())
         {
             out.code = 3;
-            out.note = L"Pick a game in the list first (the limiter is set for its .exe).";
+            out.note = ui::PickAGameInTheListFirst;
             return out;
         }
         profile = gameExe;
@@ -1176,16 +1179,16 @@ LimiterOut DoLimiterImpl(RtssApi& api, const oc::Settings& st, const std::wstrin
         WritePrivateProfileStringW(L"Rtss", L"Has", L"1", ini.c_str());
     }
 
-    static const wchar_t* const modeNames[] = { L"async", L"front edge sync", L"back edge sync" };
+    static const wchar_t* const modeNames[] = { ui::Async, ui::FrontEdgeSync, ui::BackEdgeSync };
     const int mode = (st.limitMode >= 0 && st.limitMode <= 2) ? st.limitMode : 1;
-    const std::wstring who = profile.empty() ? std::wstring(L"Global") : profile;
+    const std::wstring who = profile.empty() ? std::wstring(ui::Global) : profile;
     if (!api.Write(name, num, den, mode))
     {
         if (!sameProfile)
             WritePrivateProfileStringW(L"Rtss", L"Has", L"0", ini.c_str());
         out.code = 1;
-        out.info = L"RTSS did not accept the change.";
-        out.note = L"RTSS did not take the limit.";
+        out.info = ui::RtssDidNotAcceptTheChange;
+        out.note = ui::RtssDidNotTakeTheLimit;
         return out;
     }
 
@@ -1199,9 +1202,9 @@ LimiterOut DoLimiterImpl(RtssApi& api, const oc::Settings& st, const std::wstrin
         if (!fpsText.empty() && fpsText.back() == L'.')
             fpsText.pop_back();
     }
-    out.info = who + L" - " + fpsText + L" fps - " + modeNames[mode];
-    out.note = L"RTSS limit set: " + who + L" at " + fpsText + L" fps (" + modeNames[mode] + L")." +
-               (RtssDir().empty() ? L" RTSS is not running - start it before the game." : L"");
+    out.info = std::format(ui::LimiterSummary, who, fpsText, modeNames[mode]);
+    out.note = std::format(ui::RtssLimitSet, who, fpsText, modeNames[mode]) +
+               (RtssDir().empty() ? ui::RtssNotRunning : L"");
     return out;
 }
 
@@ -1335,8 +1338,8 @@ LimiterOut RunLimiterElevated(const std::wstring& gameExe, int hz, bool off)
     if (!ShellExecuteExW(&sei) || !sei.hProcess)
     {
         out.code = 1;
-        out.info = L"Administrator permission was not given.";
-        out.note = L"RTSS needs administrator rights to take the limit. Press Apply again and allow it.";
+        out.info = ui::AdministratorPermissionWasNotGiven;
+        out.note = ui::RtssNeedsAdministratorRightsToTakeThe;
         return out;
     }
     WaitForSingleObject(sei.hProcess, 60000);
@@ -1352,7 +1355,7 @@ LimiterOut RunLimiterElevated(const std::wstring& gameExe, int hz, bool off)
     out.note = buf;
     out.code = static_cast<int>(code);
     if (out.note.empty())
-        out.note = L"RTSS did not take the limit. Is RTSS running?";
+        out.note = ui::RtssDidNotTakeTheLimitIs;
     return out;
 }
 
@@ -1589,9 +1592,9 @@ class App
         // every mode: Output scaling off
         st_.upscale = 0;
         Save();
-        static const wchar_t* const names[] = { L"NO FG MOD", L"x2 FG MOD (NEW GPU)", L"x3 FG MOD (NEW GPU)", L"x4 FG MOD (NEW GPU)",
-                                                L"x2 FG MOD (OLD GPU)", L"x3 FG MOD (OLD GPU)", L"x4 FG MOD (OLD GPU)" };
-        SetNote(std::wstring(names[k]) + L": limiter, present mode and frame generation set.", Note::Ok);
+        static const wchar_t* const names[] = { ui::NoFgMod, ui::X2FgModNewGpu, ui::X3FgModNewGpu, ui::X4FgModNewGpu,
+                                                ui::X2FgModOldGpu, ui::X3FgModOldGpu, ui::X4FgModOldGpu };
+        SetNote(std::format(ui::PresetApplied, names[k]), Note::Ok);
         OnClick(kIdFrameGenApply); // writes OptiScaler.ini for the chosen frame generation (and the picture upscaler when output scaling is on)
     }
     gp::RectF upSliderRect_{};
@@ -1663,12 +1666,12 @@ class App
         const std::wstring ini = oc::ExeDir() + L"OptiScaler.ini";
         if (GetFileAttributesW(ini.c_str()) == INVALID_FILE_ATTRIBUTES)
         {
-            SetNote(L"OptiScaler.ini was not found next to the launcher.", Note::Error);
+            SetNote(ui::OptiscalerIniWasNotFoundNextTo, Note::Error);
             return false;
         }
         if (!WritePrivateProfileStringW(section, key, value, ini.c_str()))
         {
-            SetNote(L"Could not update OptiScaler.ini. Check the file and permissions.", Note::Error);
+            SetNote(ui::CouldNotUpdateOptiscalerIniCheckThe, Note::Error);
             return false;
         }
         return true;
@@ -1852,7 +1855,7 @@ bool App::Create(HINSTANCE inst)
     const int x = work.left + ((work.right - work.left) - ww) / 2;
     const int y = work.top + ((work.bottom - work.top) - wh) / 2;
 
-    hwnd_ = CreateWindowExW(0, kClassName, L"OptiCaptureHost  -  by MK-JH", style, x, y, ww, wh, nullptr, nullptr, inst,
+    hwnd_ = CreateWindowExW(0, kClassName, ui::LauncherTitle, style, x, y, ww, wh, nullptr, nullptr, inst,
                             this);
     if (!hwnd_)
         return false;
@@ -1921,16 +1924,27 @@ void App::MakeFonts()
     { return std::make_unique<gp::Font>(family, S(px), style, gp::UnitPixel); };
 
     const int regular = gp::FontStyleRegular;
-    f_.title = mk(L"Segoe UI Semibold", 24.0f, regular);
-    f_.h2 = mk(L"Segoe UI Semibold", 16.5f, regular);
-    f_.body = mk(L"Segoe UI", 15.0f, regular);
-    f_.bodyB = mk(L"Segoe UI Semibold", 15.5f, regular);
-    f_.sm = mk(L"Segoe UI", 13.5f, regular);
-    f_.tiny = mk(L"Segoe UI", 12.0f, regular);
-    f_.link = mk(L"Segoe UI Semibold", 14.5f, gp::FontStyleUnderline);
-    f_.linkN = mk(L"Segoe UI Semibold", 14.5f, regular);
-    f_.btn = mk(L"Segoe UI Semibold", 16.5f, regular);
-    f_.chip = mk(L"Segoe UI Semibold", 14.0f, regular);
+    int emphasis = regular;
+    const wchar_t* normal = L"Segoe UI";
+    const wchar_t* semibold = L"Segoe UI Semibold";
+#ifdef OC_UI_ZH_CN
+    gp::FontFamily chinese(L"Microsoft YaHei UI");
+    if (chinese.GetLastStatus() == gp::Ok)
+    {
+        normal = semibold = L"Microsoft YaHei UI";
+        emphasis = gp::FontStyleBold;
+    }
+#endif
+    f_.title = mk(semibold, 24.0f, emphasis);
+    f_.h2 = mk(semibold, 16.5f, emphasis);
+    f_.body = mk(normal, 15.0f, regular);
+    f_.bodyB = mk(semibold, 15.5f, emphasis);
+    f_.sm = mk(normal, 13.5f, regular);
+    f_.tiny = mk(normal, 12.0f, regular);
+    f_.link = mk(semibold, 14.5f, emphasis | gp::FontStyleUnderline);
+    f_.linkN = mk(semibold, 14.5f, emphasis);
+    f_.btn = mk(semibold, 16.5f, emphasis);
+    f_.chip = mk(semibold, 14.0f, emphasis);
 }
 
 void App::ApplyDpi(UINT dpi, const RECT* suggested)
@@ -2044,7 +2058,7 @@ bool App::RegisterShowHotkey()
     UnregisterHotKey(hwnd_, kHotkeyShow);
     if (!RegisterHotKey(hwnd_, kHotkeyShow, st_.launcher.mods | MOD_NOREPEAT, st_.launcher.vk))
     {
-        SetNote(L"The \"Show this window\" shortcut is already used by another program. Pick a different one.", Note::Error);
+        SetNote(ui::TheShowThisWindowShortcutIsAlready, Note::Error);
         return false;
     }
     return true;
@@ -2064,7 +2078,7 @@ void App::Start()
 
     if (selected_ < 0 || selected_ >= static_cast<int>(games_.size()))
     {
-        SetNote(L"Pick a game from the list first.", Note::Error);
+        SetNote(ui::PickAGameFromTheListFirst, Note::Error);
         return;
     }
 
@@ -2079,7 +2093,7 @@ void App::Start()
     if (!IsWindow(game.hwnd))
     {
         Refresh();
-        SetNote(L"That window is gone. Pick the game again.", Note::Error);
+        SetNote(ui::ThatWindowIsGonePickTheGame, Note::Error);
         return;
     }
 
@@ -2087,7 +2101,7 @@ void App::Start()
     const std::wstring host = dir + kHostExe;
     if (GetFileAttributesW(host.c_str()) == INVALID_FILE_ATTRIBUTES)
     {
-        SetNote(L"OptiCaptureHost.exe was not found next to the launcher.", Note::Error);
+        SetNote(ui::OpticapturehostExeWasNotFoundNextTo, Note::Error);
         return;
     }
 
@@ -2119,7 +2133,7 @@ void App::Start()
     PROCESS_INFORMATION pi{};
     if (!CreateProcessW(host.c_str(), buf.data(), nullptr, nullptr, FALSE, 0, nullptr, dir.c_str(), &si, &pi))
     {
-        SetNote(L"Could not start OptiCaptureHost.exe (error " + std::to_wstring(GetLastError()) + L").", Note::Error);
+        SetNote(std::format(ui::HostStartFailed, GetLastError()), Note::Error);
         return;
     }
     CloseHandle(pi.hThread);
@@ -2197,9 +2211,9 @@ void App::PollHost()
         }
 
         if (asked || code == 0)
-            SetNote(L"Capture ended.", Note::Ok);
+            SetNote(ui::CaptureEnded, Note::Ok);
         else
-            SetNote(L"The capture host stopped (code " + std::to_wstring(code) + L"). See OptiCaptureHost.log.", Note::Error);
+            SetNote(std::format(ui::HostStopped, code), Note::Error);
 
         Refresh();
         ShowOnTop();
@@ -2238,6 +2252,11 @@ std::wstring Num(double v, int decimals)
     wchar_t b[48] = {};
     swprintf_s(b, 48, decimals <= 0 ? L"%.0f" : (decimals == 1 ? L"%.1f" : L"%.2f"), v);
     return b;
+}
+
+std::wstring SizeText(long width, long height)
+{
+    return std::format(L"{}x{}", width, height);
 }
 } // namespace
 
@@ -2297,7 +2316,7 @@ void App::ApplyLimiter(bool off)
     LimiterOut r = DoLimiter(rtss_, st_, exe, hz, off);
     if (r.code == 1 && !IsElevated())
     {
-        SetNote(L"RTSS needs administrator rights to write the limit - allow the Windows prompt.", Note::Info);
+        SetNote(ui::RtssNeedsAdministratorRightsToWriteThe, Note::Info);
         r = RunLimiterElevated(exe, hz, off);
     }
 
@@ -2305,9 +2324,7 @@ void App::ApplyLimiter(bool off)
     {
         shownWarn_[kWarnRtssMissing] = false;
         RaiseWarning(kWarnRtssMissing,
-                     L"The frame limiter uses RivaTuner Statistics Server (RTSS), and it was not found on this PC.\n\n"
-                     L"Install RTSS (it comes with MSI Afterburner, or from guru3d.com), start it, then press Apply again.\n\n"
-                     L"RTSS must be running while you play: it does the actual limiting.");
+                     ui::RtssInstallHelp);
     }
     if (!r.info.empty())
         limitInfo_ = r.info;
@@ -2320,13 +2337,13 @@ void App::ToggleBorderless()
 {
     if (selected_ < 0 || selected_ >= static_cast<int>(games_.size()))
     {
-        SetNote(L"Pick a game in the list first.", Note::Error);
+        SetNote(ui::PickAGameInTheListFirst2, Note::Error);
         return;
     }
     const HWND w = games_[selected_].hwnd;
     if (!IsWindow(w))
     {
-        SetNote(L"That window is gone. Press Refresh.", Note::Error);
+        SetNote(ui::ThatWindowIsGonePressRefresh, Note::Error);
         return;
     }
 
@@ -2337,16 +2354,16 @@ void App::ToggleBorderless()
         bool ok = BorderApplyOff(w, b);
         if (!ok && !IsElevated())
         {
-            SetNote(L"The game window needs administrator rights - allow the Windows prompt.", Note::Info);
+            SetNote(ui::TheGameWindowNeedsAdministratorRightsAllow, Note::Info);
             ok = RunBorderElevated(false, b);
         }
         if (!ok)
         {
-            SetNote(L"Could not bring the window frame back.", Note::Error);
+            SetNote(ui::CouldNotBringTheWindowFrameBack, Note::Error);
             return;
         }
         border_.erase(border_.begin() + idx);
-        SetNote(L"Borderless is off: the window frame is back.", Note::Ok);
+        SetNote(ui::BorderlessIsOffTheWindowFrameIs, Note::Ok);
         Refresh();
         return;
     }
@@ -2366,16 +2383,16 @@ void App::ToggleBorderless()
     bool ok = BorderApplyOn(w, b);
     if (!ok && !IsElevated())
     {
-        SetNote(L"The game window needs administrator rights - allow the Windows prompt.", Note::Info);
+        SetNote(ui::TheGameWindowNeedsAdministratorRightsAllow, Note::Info);
         ok = RunBorderElevated(true, b);
     }
     if (!ok)
     {
-        SetNote(L"Windows did not let the launcher change that window.", Note::Error);
+        SetNote(ui::WindowsDidNotLetTheLauncherChange, Note::Error);
         return;
     }
     border_.push_back(b);
-    SetNote(L"Borderless is on. Press the button again to bring the frame back.", Note::Ok);
+    SetNote(ui::BorderlessIsOnPressTheButtonAgain, Note::Ok);
     Refresh();
 }
 
@@ -2388,7 +2405,7 @@ void App::RestoreLimiter()
     if (r == 1 && !IsElevated())
         r = RunLimitRestoreElevated();
     if (r == 0)
-        limitInfo_ = L"Limiter put back after the capture.";
+        limitInfo_ = ui::LimiterPutBackAfterTheCapture;
 }
 
 void App::SetRtssOsd(bool hide)
@@ -2447,8 +2464,7 @@ void App::KeepGameSize()
     ++keepTries_;
     keepNext_ = now + 4000;
     ResizeGameWindow(true);
-    SetNote(L"The game changed its resolution (" + std::to_wstring(w) + L"x" + std::to_wstring(h) + L"): the window was set back to " +
-                std::to_wstring(cw) + L"x" + std::to_wstring(ch) + L".", Note::Info);
+    SetNote(std::format(ui::GameResolutionRestored, SizeText(w, h), SizeText(cw, ch)), Note::Info);
 }
 
 void App::ResizeGameWindow(bool quiet)
@@ -2456,14 +2472,14 @@ void App::ResizeGameWindow(bool quiet)
     if (selected_ < 0 || selected_ >= static_cast<int>(games_.size()))
     {
         if (!quiet)
-            SetNote(L"Pick a game first.", Note::Info);
+            SetNote(ui::PickAGameFirst, Note::Info);
         return;
     }
     HWND w = games_[selected_].hwnd;
     if (!IsWindow(w))
     {
         if (!quiet)
-            SetNote(L"That window is gone. Press Refresh.", Note::Error);
+            SetNote(ui::ThatWindowIsGonePressRefresh, Note::Error);
         return;
     }
     if (upWnd_ != w)
@@ -2498,17 +2514,14 @@ void App::ResizeGameWindow(bool quiet)
         return;
     if (cr.right - cr.left == cw && cr.bottom - cr.top == ch)
         {
-        static const wchar_t* const methodN[] = { L"Off", L"Bilinear", L"FSR 1", L"NIS", L"FSR3/4", L"DLSS" };
-        static const wchar_t* const levelN[] = { L"Quality", L"Balanced", L"Performance", L"Native" };
+        static const wchar_t* const methodN[] = { ui::Off, L"Bilinear", L"FSR 1", L"NIS", L"FSR3/4", L"DLSS" };
+        static const wchar_t* const levelN[] = { ui::Quality, ui::Balanced, ui::Performance, ui::Native };
         const std::wstring mode = std::wstring(methodN[(st_.upscale >= 0 && st_.upscale <= 5) ? st_.upscale : 0]) + L" \u00B7 " +
                                   levelN[(st_.upscaleLevel >= 0 && st_.upscaleLevel <= 3) ? st_.upscaleLevel : 0];
-        SetNote(L"Game window is now " + std::to_wstring(cw) + L"x" + std::to_wstring(ch) + L" (" + mode + L"). The host scales it to " +
-                    std::to_wstring(mw) + L"x" + std::to_wstring(mh) + L".", Note::Ok);
+        SetNote(std::format(ui::GameResolutionScaled, SizeText(cw, ch), mode, SizeText(mw, mh)), Note::Ok);
     }
     else
-        SetNote(L"Window is now " + std::to_wstring(cr.right - cr.left) + L"x" + std::to_wstring(cr.bottom - cr.top) +
-                    L" (wanted " + std::to_wstring(cw) + L"x" + std::to_wstring(ch) + L"). Set the game's own resolution if it differs.",
-                Note::Info);
+        SetNote(std::format(ui::GameResolutionAdjusted, SizeText(cr.right - cr.left, cr.bottom - cr.top), SizeText(cw, ch)), Note::Info);
 }
 
 // Folder of the saved profile of a game: <launcher folder>\Game Profiles\<exe name without .exe>
@@ -2536,32 +2549,31 @@ void App::SaveProfile()
 {
     if (selected_ < 0 || selected_ >= static_cast<int>(games_.size()))
     {
-        SetNote(L"Pick a game in the list first.", Note::Error);
+        SetNote(ui::PickAGameInTheListFirst2, Note::Error);
         return;
     }
     const std::wstring exe = games_[selected_].exe;
     std::wstring dir;
     if (!ProfileFolder(exe, dir))
     {
-        SetNote(L"This window has no program name, so a profile cannot be saved for it.", Note::Error);
+        SetNote(ui::ThisWindowHasNoProgramNameSo, Note::Error);
         return;
     }
     const std::wstring src = oc::ExeDir() + L"OptiScaler.ini";
     if (GetFileAttributesW(src.c_str()) == INVALID_FILE_ATTRIBUTES)
     {
-        SetNote(L"OptiScaler.ini was not found next to the launcher.", Note::Error);
+        SetNote(ui::OptiscalerIniWasNotFoundNextTo, Note::Error);
         return;
     }
     CreateDirectoryW((oc::ExeDir() + kProfilesDir).c_str(), nullptr);
     CreateDirectoryW(dir.c_str(), nullptr);
     if (!CopyFileW(src.c_str(), (dir + L"\\" + SlotFile(profileSlot_)).c_str(), FALSE))
     {
-        SetNote(L"Could not save the profile. Check the folder permissions.", Note::Error);
+        SetNote(ui::CouldNotSaveTheProfileCheckThe, Note::Error);
         return;
     }
     RememberSlot(exe, profileSlot_);
-    SetNote(L"Profile " + std::to_wstring(profileSlot_) + L" saved for " + exe + L" (" + kProfilesDir + L"\\" +
-                dir.substr(dir.find_last_of(L'\\') + 1) + L").", Note::Ok);
+    SetNote(std::format(ui::ProfileSaved, profileSlot_, exe, std::wstring(kProfilesDir) + L"\\" + dir.substr(dir.find_last_of(L'\\') + 1)), Note::Ok);
 }
 
 // Puts the saved OptiScaler.ini of a game back next to the launcher.
@@ -2573,18 +2585,18 @@ void App::ApplyProfile(const std::wstring& exe, int slot)
     const std::wstring src = dir + L"\\" + SlotFile(slot);
     if (GetFileAttributesW(src.c_str()) == INVALID_FILE_ATTRIBUTES)
     {
-        SetNote(L"Profile " + std::to_wstring(slot) + L" of " + exe + L" is empty. Press Save to store the current settings in it.", Note::Info);
+        SetNote(std::format(ui::EmptyProfile, slot, exe), Note::Info);
         return;
     }
     if (!CopyFileW(src.c_str(), (oc::ExeDir() + L"OptiScaler.ini").c_str(), FALSE))
     {
-        SetNote(L"Could not apply the saved profile of " + exe + L". Check the file and permissions.", Note::Error);
+        SetNote(std::format(ui::ProfileApplyFailed, exe), Note::Error);
         return;
     }
     ReadPictureState();
     profileSlot_ = slot;
     RememberSlot(exe, slot);
-    SetNote(L"Profile " + std::to_wstring(slot) + L" of " + exe + L" applied (OptiScaler.ini replaced).", Note::Ok);
+    SetNote(std::format(ui::ProfileApplied, slot, exe), Note::Ok);
 }
 
 // A game was picked in the list: if it has a saved profile, apply it (auto mode) or ask.
@@ -2613,9 +2625,7 @@ void App::OfferProfile()
     }
     profileExe_ = exe;
     profileApplySlot_ = slot;
-    warnText_[kWarnProfile] = L"You saved settings (profile " + std::to_wstring(slot) + L") for " + exe +
-                              L" earlier.\n\nDo you want to apply them now? This replaces the OptiScaler.ini next to the launcher "
-                              L"with the one saved for this game.";
+    warnText_[kWarnProfile] = std::format(ui::ConfirmProfileApply, slot, exe);
     dlgKind_ = kWarnProfile;
     dlgProfile_ = true;
     dlgDontShow_ = false;
@@ -2700,7 +2710,7 @@ void App::PaintLive(gp::Graphics& g, const gp::RectF& view)
         gp::SolidBrush dot(liveValid_ ? col::Green() : col::Amber());
         g.FillEllipse(&dot, view.X + S(4), view.Y + S(8), S(9), S(9));
     }
-    Text(g, liveValid_ ? L"Live status" : L"Live status – waiting for the host…", *f_.bodyB,
+    Text(g, liveValid_ ? ui::LiveStatus : ui::LiveStatusWaitingForTheHost, *f_.bodyB,
          gp::RectF(view.X + S(20), view.Y + S(2), view.Width - S(24), S(22)), col::Text());
 
     float y = view.Y + S(30);
@@ -2713,30 +2723,30 @@ void App::PaintLive(gp::Graphics& g, const gp::RectF& view)
     };
 
 
-    static const wchar_t* vsShort[] = { L"Auto", L"On · 0", L"On · 1", L"Off" };
-    static const wchar_t* focusNames[] = { L"Game", L"Overlay", L"Other window" };
+    static const wchar_t* vsShort[] = { ui::Auto, ui::On0, ui::On1, ui::Off };
+    static const wchar_t* focusNames[] = { ui::Game, ui::Overlay, ui::OtherWindow };
 
     const std::wstring dash = L"–";
-    row(L"Game", targetTitle_.empty() ? dash : targetTitle_, col::Text());
-    row(L"Display refresh", liveValid_ && live_.refreshHz > 0 ? Num(live_.refreshHz, 0) + L" Hz" : dash, col::Text());
-    row(L"Game frames (capture)", liveValid_ ? Num(live_.captureFps, 1) + L" fps" + (capActive_ ? L"   · looks capped" : L"") : dash,
+    row(ui::Game, targetTitle_.empty() ? dash : targetTitle_, col::Text());
+    row(ui::DisplayRefresh, liveValid_ && live_.refreshHz > 0 ? Num(live_.refreshHz, 0) + L" Hz" : dash, col::Text());
+    row(ui::GameFramesCapture, liveValid_ ? Num(live_.captureFps, 1) + ui::FPSUnit + (capActive_ ? ui::LooksCapped : L"") : dash,
         capActive_ ? col::Amber() : col::Text());
-    row(L"Presented by the host", liveValid_ ? Num(live_.presentFps, 1) + L" /s" : dash, col::Text());
-    row(L"Presents counted by DXGI", liveValid_ ? Num(live_.dxgiFps, 1) + L" /s" : dash, col::Text());
-    row(L"Time inside Present",
-        liveValid_ ? Num(live_.presentMs, 2) + L" ms   · wait " + Num(live_.waitMs, 2) + L" ms" : dash,
+    row(ui::PresentedByTheHost, liveValid_ ? Num(live_.presentFps, 1) + L" /s" : dash, col::Text());
+    row(ui::PresentsCountedByDxgi, liveValid_ ? Num(live_.dxgiFps, 1) + L" /s" : dash, col::Text());
+    row(ui::TimeInsidePresent,
+        liveValid_ ? std::format(ui::PresentTiming, Num(live_.presentMs, 2), Num(live_.waitMs, 2)) : dash,
         blockActive_ ? col::Amber() : col::Text());
-    row(L"Sync interval",
+    row(ui::SyncInterval,
         liveValid_ ? std::to_wstring(live_.interval) + L"   · VSync " + vsShort[vsyncMode_ < 0 ? 0 : (vsyncMode_ == 2 ? 1 : (vsyncMode_ == 1 ? 2 : 3))] : dash,
         col::Text());
-    row(L"Focus", liveValid_ ? focusNames[(live_.focus >= 0 && live_.focus <= 2) ? live_.focus : 2] : dash, col::Text());
-    row(L"Frame generation", kFgNames[(st_.frameGenMode >= 0 && st_.frameGenMode <= 10) ? st_.frameGenMode : 0], col::Text());
+    row(ui::Focus, liveValid_ ? focusNames[(live_.focus >= 0 && live_.focus <= 2) ? live_.focus : 2] : dash, col::Text());
+    row(ui::FrameGeneration, kFgNames[(st_.frameGenMode >= 0 && st_.frameGenMode <= 10) ? st_.frameGenMode : 0], col::Text());
 
     if (capActive_ || blockActive_)
     {
-        std::wstring w = capActive_ ? L"Game looks capped" : L"";
+        std::wstring w = capActive_ ? ui::GameLooksCapped : L"";
         if (blockActive_)
-            w += (w.empty() ? L"" : L"  ·  ") + std::wstring(L"Present is waiting");
+            w += (w.empty() ? L"" : L"  ·  ") + std::wstring(ui::PresentIsWaiting);
         Text(g, L"Check: " + w, *f_.sm, gp::RectF(view.X + S(6), y + S(4), view.Width - S(12), S(20)), col::Amber());
     }
 }
@@ -2770,7 +2780,7 @@ void App::PaintDialog(gp::Graphics& g, int W, int H)
         StrokeRound(g, box, S(5), hot ? col::Accent2() : col::Line(), max(1.0f, S(1)));
         if (dlgDontShow_)
             Text(g, L"✓", *f_.chip, box, col::White(), 1);
-        Text(g, dlgProfile_ ? L"Always apply saved profiles automatically" : L"Don't show this warning again", *f_.body, R(190, 484, 380, 24), col::Text());
+        Text(g, dlgProfile_ ? ui::AlwaysApplySavedProfilesAutomatically : ui::DonTShowThisWarningAgain, *f_.body, R(190, 484, 380, 24), col::Text());
         AddHit(R(160, 480, 360, 32), kIdDlgCheck);
     }
 
@@ -2788,13 +2798,13 @@ void App::PaintDialog(gp::Graphics& g, int W, int H)
 
     if (dlgProfile_)
     {
-        button(R(494, 512, 130, 34), L"No", kIdDlgCancel, false);
-        button(R(636, 512, 150, 34), L"Apply", kIdDlgOk, true);
+        button(R(494, 512, 130, 34), ui::No, kIdDlgCancel, false);
+        button(R(636, 512, 150, 34), ui::Apply, kIdDlgOk, true);
     }
     else if (dlgStart_)
     {
-        button(R(494, 512, 130, 34), L"Cancel", kIdDlgCancel, false);
-        button(R(636, 512, 150, 34), L"Start anyway", kIdDlgOk, true);
+        button(R(494, 512, 130, 34), ui::Cancel, kIdDlgCancel, false);
+        button(R(636, 512, 150, 34), ui::StartAnyway, kIdDlgOk, true);
     }
     else
     {
@@ -2850,7 +2860,7 @@ LRESULT App::OnCaptureKey(UINT vk)
             mods |= MOD_ALT;
         if (mods == 0)
         {
-            SetNote(L"Hold Ctrl, Shift or Alt together with the key (so it does not clash with the game).", Note::Error);
+            SetNote(ui::HoldCtrlShiftOrAltTogetherWith, Note::Error);
             return 0;
         }
 
@@ -2862,7 +2872,7 @@ LRESULT App::OnCaptureKey(UINT vk)
             const oc::Hotkey* h = HotkeyRef(other);
             if (other != sc && h && *h == candidate)
             {
-                SetNote(L"Already used by \"" + std::wstring(kShortcutDefs[other].label) + L"\".", Note::Error);
+                SetNote(std::format(ui::ShortcutInUse, kShortcutDefs[other].label), Note::Error);
                 return 0;
             }
         }
@@ -2876,7 +2886,7 @@ LRESULT App::OnCaptureKey(UINT vk)
             const UINT* k = KeyRef(other);
             if (other != sc && k && *k == vk)
             {
-                SetNote(L"Already used by \"" + std::wstring(kShortcutDefs[other].label) + L"\".", Note::Error);
+                SetNote(std::format(ui::ShortcutInUse, kShortcutDefs[other].label), Note::Error);
                 return 0;
             }
         }
@@ -2887,7 +2897,7 @@ LRESULT App::OnCaptureKey(UINT vk)
     capturing_ = -1;
     Save();
     WriteOptiScalerKeys(st_);
-    SetNote(L"Saved to OptiScaler.ini.", Note::Ok);
+    SetNote(ui::SavedToOptiscalerIni, Note::Ok);
     RegisterShowHotkey();
     Invalidate();
     return 0;
@@ -2971,20 +2981,20 @@ void App::InstallReshadeForSelectedGame()
 {
     if (selected_ < 0 || selected_ >= static_cast<int>(games_.size()))
     {
-        SetNote(L"Pick a game from the list first.", Note::Error);
+        SetNote(ui::PickAGameFromTheListFirst, Note::Error);
         return;
     }
     const GameItem game = games_[selected_];
     if (game.fullExe.empty())
     {
-        SetNote(L"Could not read the game's executable path (protected process).", Note::Error);
+        SetNote(ui::CouldNotReadTheGameSExecutable, Note::Error);
         return;
     }
 
     const size_t slash = game.fullExe.find_last_of(L"\\/");
     if (slash == std::wstring::npos)
     {
-        SetNote(L"Invalid game executable path.", Note::Error);
+        SetNote(ui::InvalidGameExecutablePath, Note::Error);
         return;
     }
     const std::wstring gameDir = game.fullExe.substr(0, slash);
@@ -2994,7 +3004,7 @@ void App::InstallReshadeForSelectedGame()
     if (srcAttr == INVALID_FILE_ATTRIBUTES || !(srcAttr & FILE_ATTRIBUTE_DIRECTORY))
     {
         CreateDirectoryW(bundleDir.c_str(), nullptr);
-        SetNote(std::wstring(L"Created \"") + kReshadeBundleDir + L"\" next to the launcher. Put the required files inside it and click Install again.", Note::Error);
+        SetNote(std::format(ui::BundleFolderCreated, kReshadeBundleDir), Note::Error);
         return;
     }
 
@@ -3015,7 +3025,7 @@ void App::InstallReshadeForSelectedGame()
     }
     if (!hasAny)
     {
-        SetNote(std::wstring(L"Folder \"") + kReshadeBundleDir + L"\" is empty. Put the required files inside it first.", Note::Error);
+        SetNote(std::format(ui::EmptyBundleFolder, kReshadeBundleDir), Note::Error);
         return;
     }
 
@@ -3024,7 +3034,7 @@ void App::InstallReshadeForSelectedGame()
     bool closedOk = true;
     if (wasRunning)
     {
-        SetNote(L"Closing " + game.exe + L" completely before copying ReShade files...", Note::Info);
+        SetNote(std::format(ui::ClosingGameForReshade, game.exe), Note::Info);
         UpdateWindow(hwnd_);
         closedOk = CloseGameCompletely(game.hwnd, game.exe);
     }
@@ -3052,25 +3062,22 @@ void App::InstallReshadeForSelectedGame()
         DockPanel();
     }
 
-    std::wstring msg = L"Copied " + std::to_wstring(copied) + L" required file(s) to:\n" + gameDir + L"\n\n" +
-                       L"Notes:\n"
-                       L"1. Install ReShade (with Add-on support) on the game first; this button copies only the required files.\n"
-                       L"2. Works on Direct3D 11 / 12 (GPU) and Direct3D 9 / 10 / OpenGL / Vulkan (CPU).\n"
-                       L"3. In-game, open the ReShade menu and tick OptiCaptureDepth on (single-player games only).";
+    std::wstring msg = std::format(ui::ReshadeCopyHelp, copied, gameDir);
     if (wasRunning)
     {
         if (relaunched)
-            msg += L"\n\n" + game.exe + L" was closed and launched again from its executable.";
+            msg += L"\n\n" + std::format(ui::ReshadeGameRelaunched, game.exe);
         else if (!closedOk)
-            msg += L"\n\nWarning: " + game.exe + L" was still running; close it and launch it again.";
+            msg += L"\n\n" + std::format(ui::ReshadeGameStillRunning, game.exe);
         else
-            msg += L"\n\n" + game.exe + L" was closed; please launch it again.";
+            msg += L"\n\n" + std::format(ui::ReshadeGameClosed, game.exe);
     }
     if (failed > 0)
-        msg += L"\n\nWarning: " + std::to_wstring(failed) + L" file(s) could not be copied.";
+        msg += L"\n\n" + std::format(ui::ReshadeCopyFailed, failed);
 
-    MessageBoxW(hwnd_, msg.c_str(), L"ReShade Installation", MB_OK | (failed > 0 ? MB_ICONWARNING : MB_ICONINFORMATION));
-    SetNote(L"Copied " + std::to_wstring(copied) + L" file(s) to " + game.exe + (relaunched ? L" and restarted the game." : L"."),
+    MessageBoxW(hwnd_, msg.c_str(), ui::ReshadeInstallation, MB_OK | (failed > 0 ? MB_ICONWARNING : MB_ICONINFORMATION));
+    SetNote(relaunched ? std::format(ui::ReshadeCopyAndRestart, copied, game.exe)
+                       : std::format(ui::ReshadeCopyComplete, copied, game.exe),
             failed > 0 ? Note::Error : Note::Ok);
 }
 
@@ -3094,7 +3101,7 @@ void App::OnClick(int id)
             hideWarn_[i] = false;
             WritePrivateProfileStringW(L"Warnings", kWarnKeys[i], L"0", oc::SettingsPath().c_str());
         }
-        SetNote(L"Hidden warnings will be shown again.", Note::Ok);
+        SetNote(ui::HiddenWarningsWillBeShownAgain, Note::Ok);
         return;
     }
 
@@ -3106,8 +3113,8 @@ void App::OnClick(int id)
     {
         // Order in the menu: Auto, On with SyncInterval 0, On with SyncInterval 1, Off.
         static const wchar_t* names[] = {
-            L"Auto  (default, nothing forced)", L"On  (ForceVsync = true, SyncInterval = 0)",
-            L"On  (ForceVsync = true, SyncInterval = 1)", L"Off  (ForceVsync = false)"
+            ui::AutoDefaultNothingForced, ui::OnForcevsyncTrueSyncinterval0,
+            ui::OnForcevsyncTrueSyncinterval1, ui::OffForcevsyncFalse
         };
         static const int modes[] = { -1, 2, 1, 0 };
         HMENU menu = CreatePopupMenu();
@@ -3128,11 +3135,11 @@ void App::OnClick(int id)
                 vsyncMode_ = modes[v];
                 if (ApplyVsyncToOptiScaler())
                 {
-                    SetNote(std::wstring(L"VSync: ") + names[v] + L". Restart the game to apply.", Note::Ok);
+                    SetNote(std::format(ui::VsyncChanged, names[v]), Note::Ok);
                 }
                 else
                 {
-                    SetNote(L"Could not update OptiScaler.ini. Check the file and permissions.", Note::Error);
+                    SetNote(ui::CouldNotUpdateOptiscalerIniCheckThe, Note::Error);
                 }
             }
         }
@@ -3145,10 +3152,10 @@ void App::OnClick(int id)
     {
         if (Running())
         {
-            SetNote(L"Stop the host first, then reset.", Note::Error);
+            SetNote(ui::StopTheHostFirstThenReset, Note::Error);
         }
-        else if (MessageBoxW(hwnd_, L"Reset ALL settings to their defaults?\n(frame generation, limiter, output scaling, present mode, shortcuts...)",
-                             L"Reset to default", MB_YESNO | MB_ICONQUESTION) == IDYES)
+        else if (MessageBoxW(hwnd_, ui::ResetAllSettingsToTheirDefaultsFrame,
+                             ui::ResetToDefault, MB_YESNO | MB_ICONQUESTION) == IDYES)
         {
             st_ = oc::Settings();
             st_.presentDelay = 0;  // reset values: no present delay,
@@ -3168,7 +3175,7 @@ void App::OnClick(int id)
             OnClick(kIdFrameGenApply);
             OnClick(kIdUpscalerApply);
             ReadPictureState();
-            SetNote(L"All settings reset to default.", Note::Ok);
+            SetNote(ui::AllSettingsResetToDefault, Note::Ok);
         }
     }
     else if (id == kIdLink)
@@ -3222,7 +3229,7 @@ void App::OnClick(int id)
     {
         if (st_.frameGenMode < 0 || st_.frameGenMode > 10 || st_.frameGenMode == 3)
         {
-            SetNote(L"Invalid Frame Generation selection.", Note::Error);
+            SetNote(ui::InvalidFrameGenerationSelection, Note::Error);
         }
         else
         {
@@ -3236,8 +3243,7 @@ void App::OnClick(int id)
                 WriteOptiScalerKeys(st_);
                 ApplyVsyncToOptiScaler();
                 Save();
-                SetNote(std::wstring(L"OptiScaler.ini: FGOutput = ") + output[m] + L", FGNvngxReplacement = " + nvngx[m] +
-                            L". Restart the game to use the change.", Note::Ok);
+                SetNote(std::format(ui::FrameGenerationChanged, output[m], nvngx[m]), Note::Ok);
             }
         }
         // the ini was just replaced: the chosen upscaler, the multi frame generation count and the picture upscaler go back in
@@ -3252,10 +3258,10 @@ void App::OnClick(int id)
     else if (id == kIdPresentSelect)
     {
         static const wchar_t* names[] = {
-            L"Auto  (FG on: no wait, FG off: VSync)", L"Always no wait  (interval 0)", L"Always wait for vblank  (interval 1)",
-            L"Classic  (behaves like version 2.2.0)", L"Lossless-style  (low latency, tearing allowed)",
-            L"Classic + half refresh  (exactly refresh / 2 frames)",
-            L"Classic + unlimited  (same, no half-refresh limit)"
+            ui::AutoFgOnNoWaitFgOff, ui::AlwaysNoWaitInterval0, ui::AlwaysWaitForVblankInterval1,
+            ui::ClassicBehavesLikeVersion220, ui::LosslessStyleLowLatencyTearingAllowed,
+            ui::ClassicHalfRefreshExactlyRefresh2Frames,
+            ui::ClassicUnlimitedSameNoHalfRefreshLimit
         };
         HMENU menu = CreatePopupMenu();
         if (menu)
@@ -3283,7 +3289,7 @@ void App::OnClick(int id)
             for (int v = 0; v <= 12; ++v)
             {
                 std::wstring t = std::to_wstring(v) + L" ms";
-                if (v == 0) t += L"  (off)";
+                if (v == 0) t += ui::Off2;
                 AppendMenuW(menu, MF_STRING | (st_.presentDelay == v ? MF_CHECKED : 0), kDelayMenuBase + v, t.c_str());
             }
             POINT pt{};
@@ -3300,7 +3306,7 @@ void App::OnClick(int id)
     }
     else if (id == kIdLimitTarget)
     {
-        static const wchar_t* names[] = { L"Off", L"Game  (the selected game's .exe)", L"Host  (OptiCaptureHost.exe)", L"Global  (every program)" };
+        static const wchar_t* names[] = { ui::Off, ui::GameTheSelectedGameSExe, ui::HostOpticapturehostExe, ui::GlobalEveryProgram };
         HMENU menu = CreatePopupMenu();
         if (menu)
         {
@@ -3314,13 +3320,13 @@ void App::OnClick(int id)
             {
                 st_.limitTarget = static_cast<int>(cmd - kLimitTargetMenuBase);
                 Save();
-                SetNote(L"Press Apply to use the limiter setting.", Note::Info);
+                SetNote(ui::PressApplyToUseTheLimiterSetting, Note::Info);
             }
         }
     }
     else if (id == kIdLimitMode)
     {
-        static const wchar_t* names[] = { L"Async", L"Front edge sync  (default)", L"Back edge sync" };
+        static const wchar_t* names[] = { ui::Async2, ui::FrontEdgeSyncDefault, ui::BackEdgeSync2 };
         HMENU menu = CreatePopupMenu();
         if (menu)
         {
@@ -3334,7 +3340,7 @@ void App::OnClick(int id)
             {
                 st_.limitMode = static_cast<int>(cmd - kLimitModeMenuBase);
                 Save();
-                SetNote(L"Press Apply to use the limiter setting.", Note::Info);
+                SetNote(ui::PressApplyToUseTheLimiterSetting, Note::Info);
             }
         }
     }
@@ -3344,10 +3350,10 @@ void App::OnClick(int id)
         HMENU menu = CreatePopupMenu();
         if (menu)
         {
-            AppendMenuW(menu, MF_STRING | (st_.limitFps == 0 ? MF_CHECKED : 0), kLimitFpsMenuBase + 0, L"Refresh rate  (auto)");
-            AppendMenuW(menu, MF_STRING | (st_.limitFps == -2 ? MF_CHECKED : 0), kLimitFpsMenuBase + 1, L"1/2 refresh rate  (auto)");
-            AppendMenuW(menu, MF_STRING | (st_.limitFps == -3 ? MF_CHECKED : 0), kLimitFpsMenuBase + 2, L"1/3 refresh rate  (auto)");
-            AppendMenuW(menu, MF_STRING | (st_.limitFps == -4 ? MF_CHECKED : 0), kLimitFpsMenuBase + 3, L"1/4 refresh rate  (auto)");
+            AppendMenuW(menu, MF_STRING | (st_.limitFps == 0 ? MF_CHECKED : 0), kLimitFpsMenuBase + 0, ui::RefreshRateAuto);
+            AppendMenuW(menu, MF_STRING | (st_.limitFps == -2 ? MF_CHECKED : 0), kLimitFpsMenuBase + 1, ui::Text12RefreshRateAuto);
+            AppendMenuW(menu, MF_STRING | (st_.limitFps == -3 ? MF_CHECKED : 0), kLimitFpsMenuBase + 2, ui::Text13RefreshRateAuto);
+            AppendMenuW(menu, MF_STRING | (st_.limitFps == -4 ? MF_CHECKED : 0), kLimitFpsMenuBase + 3, ui::Text14RefreshRateAuto);
             for (int i = 0; i < static_cast<int>(sizeof(fpsList) / sizeof(fpsList[0])); ++i)
                 AppendMenuW(menu, MF_STRING | (st_.limitFps == fpsList[i] ? MF_CHECKED : 0), kLimitFpsMenuBase + 4 + i,
                             (std::to_wstring(fpsList[i]) + L" fps").c_str());
@@ -3360,7 +3366,7 @@ void App::OnClick(int id)
                 const int k = static_cast<int>(cmd - kLimitFpsMenuBase);
                 st_.limitFps = k == 0 ? 0 : (k <= 3 ? -(k + 1) : fpsList[k - 4]);
                 Save();
-                SetNote(L"Press Apply to use the limiter setting.", Note::Info);
+                SetNote(ui::PressApplyToUseTheLimiterSetting, Note::Info);
             }
         }
     }
@@ -3409,8 +3415,8 @@ void App::OnClick(int id)
         }
         Save();
         SetNote(st_.depthSource == 1
-                    ? L"Depth: ReShade. Output scaling automatically set to DLSS · Quality."
-                    : L"Depth: Flat, as always. Output scaling set to Off.", Note::Ok);
+                    ? ui::DepthReshadeOutputScalingAutomaticallySetTo
+                    : ui::DepthFlatAsAlwaysOutputScalingSet, Note::Ok);
         InvalidatePanel();
     }
     else if (id == kIdDepthInstall)
@@ -3429,7 +3435,7 @@ void App::OnClick(int id)
         if (PutIni(L"DlssNr", L"Enabled", dlss5On_ ? L"auto" : L"true"))
         {
             ReadFgState();
-            SetNote(dlss5On_ ? L"DLSS 5 enabled ([DlssNr] Enabled = true)." : L"DLSS 5 disabled ([DlssNr] Enabled = auto).", Note::Ok);
+            SetNote(dlss5On_ ? ui::Dlss5EnabledDlssnrEnabledTrue : ui::Dlss5DisabledDlssnrEnabledAuto, Note::Ok);
         }
         InvalidatePanel();
     }
@@ -3438,7 +3444,7 @@ void App::OnClick(int id)
         if (PutIni(L"OptiFG", L"HUDFix", hudFix_ ? L"auto" : L"true"))
         {
             ReadFgState();
-            SetNote(hudFix_ ? L"HUD FIX on ([OptiFG] HUDFix = true)." : L"HUD FIX off ([OptiFG] HUDFix = auto).", Note::Ok);
+            SetNote(hudFix_ ? ui::HudFixOnOptifgHudfixTrue : ui::HudFixOffOptifgHudfixAuto, Note::Ok);
         }
     }
     else if (id == kIdAsyncFg)
@@ -3446,7 +3452,7 @@ void App::OnClick(int id)
         if (PutIni(L"FSRFG", L"AllowAsync", asyncFg_ ? L"auto" : L"true"))
         {
             ReadFgState();
-            SetNote(asyncFg_ ? L"ASYNC on ([FSRFG] AllowAsync = true)." : L"ASYNC off ([FSRFG] AllowAsync = auto).", Note::Ok);
+            SetNote(asyncFg_ ? ui::AsyncOnFsrfgAllowasyncTrue : ui::AsyncOffFsrfgAllowasyncAuto, Note::Ok);
         }
     }
     else if (id == kIdD5Download)
@@ -3454,7 +3460,7 @@ void App::OnClick(int id)
         if (kDlssnrUrl[0] != 0)
             ShellExecuteW(hwnd_, L"open", kDlssnrUrl, nullptr, nullptr, SW_SHOWNORMAL);
         else
-            SetNote(L"The download link for nvngx_dlssnr.dll is not set yet.", Note::Error);
+            SetNote(ui::TheDownloadLinkForNvngxDlssnrDll, Note::Error);
     }
     else if (id == kIdOptiFps)
     {
@@ -3467,14 +3473,14 @@ void App::OnClick(int id)
             if (GetFileAttributesW(ini.c_str()) != INVALID_FILE_ATTRIBUTES)
                 WritePrivateProfileStringW(L"Framerate", L"FramerateLimit", L"0.000000", ini.c_str());
         }
-        SetNote(st_.optiFps ? L"OptiScaler's frame limit will be set to the monitor's refresh rate every time the game starts."
-                            : L"OptiScaler's frame limit was set to 0 (no limit) in OptiScaler.ini.", Note::Ok);
+        SetNote(st_.optiFps ? ui::OptiscalerSFrameLimitWillBeSet
+                            : ui::OptiscalerSFrameLimitWasSetTo, Note::Ok);
     }
     else if (id == kIdLimitAuto)
     {
         st_.limitAuto = st_.limitAuto ? 0 : 1;
         Save();
-        SetNote(st_.limitAuto ? L"The limiter will be applied every time you press START." : L"The limiter is applied only with the Apply button.", Note::Ok);
+        SetNote(st_.limitAuto ? ui::TheLimiterWillBeAppliedEveryTime : ui::TheLimiterIsAppliedOnlyWithThe, Note::Ok);
     }
     else if (id == kIdProfileSave)
     {
@@ -3492,7 +3498,7 @@ void App::OnClick(int id)
         const int n = id - kIdMfg0 + 1;
         if (!MfgMode(st_.frameGenMode))
         {
-            SetNote(L"Multi frame generation count is for Intel MFG, Artur, Combo and Nvidia MFG.", Note::Info);
+            SetNote(ui::MultiFrameGenerationCountIsForIntel, Note::Info);
         }
         else
         {
@@ -3506,7 +3512,7 @@ void App::OnClick(int id)
     else if (id >= kIdPreset0 && id < kIdPreset0 + 7)
     {
         if (Running())
-            SetNote(L"Stop the capture first, then pick a mode.", Note::Info);
+            SetNote(ui::StopTheCaptureFirstThenPickA, Note::Info);
         else
             ApplyPreset(id - kIdPreset0);
     }
@@ -3515,31 +3521,31 @@ void App::OnClick(int id)
         if (selected_ >= 0 && selected_ < static_cast<int>(games_.size()))
             ApplyProfile(games_[selected_].exe, profileSlot_);
         else
-            SetNote(L"Pick a game in the list first.", Note::Error);
+            SetNote(ui::PickAGameInTheListFirst2, Note::Error);
     }
     else if (id == kIdProfileAuto)
     {
         st_.profileAuto = st_.profileAuto ? 0 : 1;
         Save();
-        SetNote(st_.profileAuto ? L"Saved game profiles will be applied automatically when you pick the game."
-                                : L"You will be asked before a saved game profile is applied.", Note::Ok);
+        SetNote(st_.profileAuto ? ui::SavedGameProfilesWillBeAppliedAutomatically
+                                : ui::YouWillBeAskedBeforeASaved, Note::Ok);
     }
     else if (id == kIdPictureOn || id == kIdPictureOff)
     {
         const bool on = id == kIdPictureOn;
         const bool ok = WritePictureIni(on);
         if (ok)
-            SetNote(on ? L"Upscaler on the picture is on (sharpness 0.6, CAS, native upscaler pass). Restart the game to use the change."
-                       : L"Upscaler on the picture is off. Restart the game to use the change.", Note::Ok);
+            SetNote(on ? ui::UpscalerOnThePictureIsOnSharpness
+                       : ui::UpscalerOnThePictureIsOffRestart, Note::Ok);
         else
-            SetNote(L"Could not update OptiScaler.ini. Check the file and permissions.", Note::Error);
+            SetNote(ui::CouldNotUpdateOptiscalerIniCheckThe, Note::Error);
     }
     else if (id == kIdBorderless)
     {
         const bool isOn = selected_ >= 0 && selected_ < static_cast<int>(games_.size()) && BorderIndex(games_[selected_].hwnd) >= 0;
         if (st_.upscale != 0 && !isOn)
-            MessageBoxW(hwnd_, L"Borderless cannot be used while Output scaling is on.\nTurn Output scaling off first, then press Borderless.",
-                        L"Output scaling is on", MB_OK | MB_ICONINFORMATION);
+            MessageBoxW(hwnd_, ui::BorderlessCannotBeUsedWhileOutputScaling,
+                        ui::OutputScalingIsOn, MB_OK | MB_ICONINFORMATION);
         else
             ToggleBorderless();
     }
@@ -3562,7 +3568,7 @@ void App::OnClick(int id)
                 mh = mi.rcMonitor.bottom - mi.rcMonitor.top;
             }
         }
-        static const wchar_t* lvName[] = { L"Quality  (1.5x", L"Balanced  (1.7x", L"Performance  (2x", L"Native  (1x" };
+        static const wchar_t* lvName[] = { ui::Quality15x, ui::Balanced17x, ui::Performance2x, ui::Native1x };
         static const double lvF[] = { 1.5, 1.7, 2.0, 1.0 };
         static const wchar_t* mName[] = { L"", L"Bilinear", L"FSR 1", L"NIS", L"FSR3/4", L"DLSS" };   // by method number
         // order: FSR3/4 Native first, then FSR3/4 Quality / Balanced / Performance, DLSS the same, then FSR 1, NIS and bilinear, Off last
@@ -3588,7 +3594,7 @@ void App::OnClick(int id)
                             kUpMenuBase + 1 + i, t.c_str());
             }
             AppendMenuW(menu, MF_SEPARATOR, 0, nullptr);
-            AppendMenuW(menu, MF_STRING | (st_.upscale == 0 ? MF_CHECKED : 0), kUpMenuBase, L"Off");
+            AppendMenuW(menu, MF_STRING | (st_.upscale == 0 ? MF_CHECKED : 0), kUpMenuBase, ui::Off);
             POINT pt{};
             GetCursorPos(&pt);
             const UINT cmd = TrackPopupMenu(menu, TPM_RETURNCMD | TPM_NONOTIFY | TPM_RIGHTBUTTON, pt.x, pt.y, 0, hwnd_, nullptr);
@@ -3597,7 +3603,7 @@ void App::OnClick(int id)
             {
                 st_.upscale = 0;
                 Save();
-                SetNote(L"Output scaling is off.", Note::Ok);
+                SetNote(ui::OutputScalingIsOff, Note::Ok);
             }
             else if (cmd > static_cast<UINT>(kUpMenuBase) && cmd <= static_cast<UINT>(kUpMenuBase + kEntries))
             {
@@ -3611,8 +3617,8 @@ void App::OnClick(int id)
                 if (st_.upscale >= 4)
                     OnClick(kIdUpscalerApply);
                 ReadPictureState();
-                SetNote(e.level == 3 ? L"Native: the game keeps its size and FSR only smooths the picture. \"Run the upscaler on the picture\" was turned on too."
-                                     : L"START makes the game window that small and scales it up. \"Run the upscaler on the picture\" was turned on too.",
+                SetNote(e.level == 3 ? ui::NativeTheGameKeepsItsSizeAnd
+                                     : ui::StartMakesTheGameWindowThatSmall,
                         Note::Info);
             }
         }
@@ -3630,7 +3636,7 @@ void App::OnClick(int id)
     else if (id == kIdBoostSelect)
     {
         static const wchar_t* names[] = {
-            L"Off  (weak GPUs)", L"Light  (CPU priority only)", L"Balanced  (CPU + GPU high)", L"Max  (best for strong GPUs)"
+            ui::OffWeakGpus, ui::LightCpuPriorityOnly, ui::BalancedCpuGpuHigh, ui::MaxBestForStrongGpus
         };
 
         HMENU menu = CreatePopupMenu();
@@ -3665,7 +3671,7 @@ void App::OnClick(int id)
             AppendMenuW(menu, MF_STRING | (st_.upscalerMode == 2 ? MF_CHECKED : 0),
                 kUpscalerMenuBase + 2, L"NVIDIA DLSS");
             AppendMenuW(menu, MF_STRING | (st_.upscalerMode == 3 ? MF_CHECKED : 0),
-                kUpscalerMenuBase + 3, L"DLSS 3.7  (AMD and GTX 16 cards)");
+                kUpscalerMenuBase + 3, ui::Dlss37AmdAndGtx16);
             AppendMenuW(menu, MF_STRING | (st_.upscalerMode == 4 ? MF_CHECKED : 0),
                 kUpscalerMenuBase + 4, L"AMD FSR 4.1.2");
             AppendMenuW(menu, MF_STRING | (st_.upscalerMode == 5 ? MF_CHECKED : 0),
@@ -3691,7 +3697,7 @@ void App::OnClick(int id)
     {
         if (st_.upscalerMode < 0 || st_.upscalerMode > 5)
         {
-            SetNote(L"Invalid Upscaler selection.", Note::Error);
+            SetNote(ui::InvalidUpscalerSelection, Note::Error);
         }
         else
         {
@@ -3786,12 +3792,12 @@ void App::OnClick(int id)
                 }
                 else
                 {
-                    SetNote(L"OptiScaler.ini updated. Restart the game to use the change.", Note::Ok);
+                    SetNote(ui::OptiscalerIniUpdatedRestartTheGameTo, Note::Ok);
                 }
             }
             else
             {
-                SetNote(L"Could not update OptiScaler.ini. Check the file and permissions.", Note::Error);
+                SetNote(ui::CouldNotUpdateOptiscalerIniCheckThe, Note::Error);
             }
         }
     }
@@ -3847,7 +3853,7 @@ bool App::CreatePanel()
         return false;
 
     // An owned popup: it stays above the main window, and hides / shows with it (minimise, restore).
-    panel_ = CreateWindowExW(WS_EX_TOOLWINDOW, kPanelClass, L"DLSS 5", WS_POPUP, 0, 0, static_cast<int>(S(kPanelW)),
+    panel_ = CreateWindowExW(WS_EX_TOOLWINDOW, kPanelClass, ui::DLSS5Title, WS_POPUP, 0, 0, static_cast<int>(S(kPanelW)),
                              static_cast<int>(S(kPanelHMissing)), hwnd_, nullptr, inst_, this);
     if (!panel_)
         return false;
@@ -3895,8 +3901,8 @@ int App::HitAt2(int x, int y) const
 
 void App::DrawDepthPanel(gp::Graphics& g)
 {
-    Text(g, L"Depth", *f_.title, R(18, 14, 234, 34), col::Text());
-    Text(g, L"For the host's own output scaling (FSR 3 / 4, DLSS).", *f_.sm, R(18, 50, 234, 36), col::Muted(), 0, true);
+    Text(g, ui::Depth, *f_.title, R(18, 14, 234, 34), col::Text());
+    Text(g, ui::ForTheHostSOwnOutputScaling, *f_.sm, R(18, 50, 234, 36), col::Muted(), 0, true);
     auto sepAt = [&](float yy)
     {
         gp::Pen sep(col::Alpha(col::Line(), 150), max(1.0f, S(1)));
@@ -3919,8 +3925,8 @@ void App::DrawDepthPanel(gp::Graphics& g)
         Text(g, desc, *f_.sm, R(48, y + 26, 204, 36), col::Muted(), 0, true);
         AddHit(R(18, y - 4, 234, 68), id);
     };
-    radio(104, L"Flat  (default)", L"As always: nothing changes. Works in every game.", st_.depthSource == 0, kIdDepthFlat);
-    radio(178, L"ReShade", L"The game's real depth buffer, found by ReShade and shared by an add-on.", st_.depthSource == 1, kIdDepthReshade);
+    radio(104, ui::FlatDefault, ui::AsAlwaysNothingChangesWorksInEvery, st_.depthSource == 0, kIdDepthFlat);
+    radio(178, L"ReShade", ui::TheGameSRealDepthBufferFound, st_.depthSource == 1, kIdDepthReshade);
     sepAt(250);
 
     // what the host sees
@@ -3928,13 +3934,13 @@ void App::DrawDepthPanel(gp::Graphics& g)
     gp::Color tone = col::Muted();
     if (st_.depthSource == 0)
     {
-        head = L"Not used";
-        detail = L"The flat depth is used, as before.";
+        head = ui::NotUsed;
+        detail = ui::TheFlatDepthIsUsedAsBefore;
     }
     else if (!Running() || !liveValid_)
     {
-        head = L"Waiting for START";
-        detail = L"Choose Output scaling FSR 3/4 or DLSS, then START.";
+        head = ui::WaitingForStart;
+        detail = ui::ChooseOutputScalingFsr34Or;
         tone = col::Amber();
     }
     else
@@ -3943,33 +3949,33 @@ void App::DrawDepthPanel(gp::Graphics& g)
         switch (live_.depthState)
         {
         case 2:
-            head = L"\u2713  Receiving " + size;
-            detail = L"The game's depth is in use.";
+            head = ui::Receiving + size;
+            detail = ui::TheGameSDepthIsInUse;
             tone = col::Green();
             break;
         case 3:
-            head = L"\u2717  Different size";
+            head = ui::DifferentSize;
             detail = L"Depth " + size + L" is not the size of the captured picture.";
             tone = col::Red();
             break;
         case 4:
-            head = L"\u2717  Cannot open it";
-            detail = L"Start the game and the host with the same rights.";
+            head = ui::CannotOpenIt;
+            detail = ui::StartTheGameAndTheHostWith;
             tone = col::Red();
             break;
         case 5:
-            head = L"No new pictures";
-            detail = L"Tick OptiCaptureDepth on in ReShade's menu.";
+            head = ui::NoNewPictures;
+            detail = ui::TickOpticapturedepthOnInReshadeSMenu;
             tone = col::Amber();
             break;
         case 1:
-            head = L"Waiting for the add-on";
-            detail = L"Is ReShade with OptiCaptureDepth.addon64 running in the game?";
+            head = ui::WaitingForTheAddOn;
+            detail = ui::IsReshadeWithOpticapturedepthAddon64RunningIn;
             tone = col::Amber();
             break;
         default:
-            head = L"Waiting";
-            detail = L"Output scaling must be FSR 3/4 or DLSS (not Off or NIS).";
+            head = ui::Waiting;
+            detail = ui::OutputScalingMustBeFsr34;
             tone = col::Amber();
             break;
         }
@@ -3982,7 +3988,7 @@ void App::DrawDepthPanel(gp::Graphics& g)
         Text(g, detail, *f_.sm, R(30, 292, 216, 38), col::Muted(), 0, true);
     }
 
-    Text(g, L"How to use", *f_.bodyB, R(18, 342, 234, 22), col::Text());
+    Text(g, ui::HowToUse, *f_.bodyB, R(18, 342, 234, 22), col::Text());
     {
         const gp::RectF box = R(18, 368, 234, 356);
         FillRound(g, box, S(10), col::Alpha(col::Accent(), 24));
@@ -4003,19 +4009,19 @@ void App::DrawDepthPanel(gp::Graphics& g)
         {
             FillRound(g, instBtn, S(9), col::Alpha(col::Green(), hotI ? 70 : 42));
             StrokeRound(g, instBtn, S(9), hotI ? col::White() : col::Green(), max(1.0f, S(1.5f)));
-            Text(g, L"Installed", *f_.chip, instBtn, col::Green(), 1);
+            Text(g, ui::Installed, *f_.chip, instBtn, col::Green(), 1);
         }
         else if (pick)
         {
             FillRound(g, instBtn, S(9), hotI ? col::Accent2() : col::Accent());
             StrokeRound(g, instBtn, S(9), hotI ? col::Accent2() : col::Line(), max(1.0f, S(1)));
-            Text(g, L"Install ReShade files", *f_.chip, instBtn, col::White(), 1);
+            Text(g, ui::InstallReshadeFiles, *f_.chip, instBtn, col::White(), 1);
         }
         else
         {
             FillRound(g, instBtn, S(9), col::Row());
             StrokeRound(g, instBtn, S(9), hotI ? col::Accent2() : col::Line(), max(1.0f, S(1)));
-            Text(g, L"Install ReShade files", *f_.chip, instBtn, col::Muted(), 1);
+            Text(g, ui::InstallReshadeFiles, *f_.chip, instBtn, col::Muted(), 1);
         }
         if (pick)
             AddHit(instBtn, kIdDepthInstall);
@@ -4025,7 +4031,7 @@ void App::DrawDepthPanel(gp::Graphics& g)
         const bool hot = hover_ == kIdDepthFolder;
         FillRound(g, btn, S(9), hot ? col::RowHot() : col::Row());
         StrokeRound(g, btn, S(9), hot ? col::Accent2() : col::Line(), max(1.0f, S(1)));
-        Text(g, L"Open \"ReShade depth\" folder", *f_.chip, btn, col::Text(), 1);
+        Text(g, ui::OpenReshadeDepthFolder, *f_.chip, btn, col::Text(), 1);
         AddHit(btn, kIdDepthFolder);
     }
 }
@@ -4064,7 +4070,7 @@ void App::PaintPanel(HDC dc, int W, int H)
     }
 
     Text(g, L"DLSS 5", *f_.title, R(18, 14, 234, 34), col::Text());
-    Text(g, L"Optional  \u00b7  needs nvngx_dlssnr.dll", *f_.sm, R(18, 50, 240, 18), col::Muted());
+    Text(g, ui::OptionalNeedsNvngxDlssnrDll, *f_.sm, R(18, 50, 240, 18), col::Muted());
     auto sepAt = [&](float yy)
     {
         gp::Pen sep(col::Alpha(col::Line(), 150), max(1.0f, S(1)));
@@ -4075,7 +4081,7 @@ void App::PaintPanel(HDC dc, int W, int H)
     // enable / disable: a switch that shows what OptiScaler.ini says ([DlssNr] Enabled = true)
     {
         const bool hot = hover_ == kIdD5Enable;
-        Text(g, L"Enable DLSS 5", *f_.bodyB, R(18, 96, 180, 26), col::Text());
+        Text(g, ui::EnableDlss5, *f_.bodyB, R(18, 96, 180, 26), col::Text());
         const gp::RectF track = R(208, 96, 44, 24);
         FillRound(g, track, S(12), dlss5On_ ? col::Accent() : col::Row());
         StrokeRound(g, track, S(12), dlss5On_ ? col::Accent2() : (hot ? col::Accent() : col::Line()), max(1.0f, S(1.5f)));
@@ -4083,7 +4089,7 @@ void App::PaintPanel(HDC dc, int W, int H)
         const float kr = S(8);
         const float kx = dlss5On_ ? track.X + track.Width - S(13) : track.X + S(13);
         g.FillEllipse(&knob, kx - kr, track.Y + track.Height / 2 - kr, kr * 2, kr * 2);
-        Text(g, dlss5On_ ? L"On: [DlssNr] Enabled = true" : L"Off: [DlssNr] Enabled = auto", *f_.tiny, R(18, 124, 234, 14),
+        Text(g, dlss5On_ ? ui::OnDlssnrEnabledTrue : ui::OffDlssnrEnabledAuto, *f_.tiny, R(18, 124, 234, 14),
              dlss5On_ ? col::Green() : col::Muted());
         AddHit(R(18, 90, 234, 52), kIdD5Enable);
     }
@@ -4093,42 +4099,42 @@ void App::PaintPanel(HDC dc, int W, int H)
     float y = 162.0f;
     {
         const bool have = DlssnrPresent();
-        Text(g, L"Required file", *f_.bodyB, R(18, y, 234, 22), col::Text());
+        Text(g, ui::RequiredFile, *f_.bodyB, R(18, y, 234, 22), col::Text());
         y += 28.0f;
         const gp::RectF box = R(18, y, 234, 58);
         FillRound(g, box, S(10), col::Row());
         StrokeRound(g, box, S(10), have ? col::Alpha(col::Green(), 130) : col::Alpha(col::Red(), 150), max(1.0f, S(1)));
         Text(g, kDlssnrFile, *f_.sm, R(30, y + 7, 214, 18), col::Muted());
-        Text(g, have ? L"\u2713  Found next to the program" : L"\u2717  Not found next to the program", *f_.bodyB, R(30, y + 28, 216, 22),
+        Text(g, have ? ui::FoundNextToTheProgram : ui::NotFoundNextToTheProgram, *f_.bodyB, R(30, y + 28, 216, 22),
              have ? col::Green() : col::Red());
         y += 70.0f;
         if (!have)
         {
-            Text(g, L"DLSS 5 will not work without it.", *f_.sm, R(18, y, 234, 18), col::Red());
+            Text(g, ui::Dlss5WillNotWorkWithoutIt, *f_.sm, R(18, y, 234, 18), col::Red());
             y += 26.0f;
 
             const gp::RectF link = R(18, y, 234, 32);
             const bool hot = hover_ == kIdD5Download;
             FillRound(g, link, S(9), hot ? col::Accent2() : col::Accent());
             StrokeRound(g, link, S(9), col::Line(), max(1.0f, S(1)));
-            Text(g, L"Download nvngx_dlssnr.dll", *f_.chip, link, col::White(), 1);
+            Text(g, ui::DownloadNvngxDlssnrDll, *f_.chip, link, col::White(), 1);
             AddHit(link, kIdD5Download);
             y += 40.0f;
-            Text(g, L"Download it and place it exactly next to the program.", *f_.sm, R(18, y, 234, 36), col::Muted(), 0, true);
+            Text(g, ui::DownloadItAndPlaceItExactlyNext, *f_.sm, R(18, y, 234, 36), col::Muted(), 0, true);
             y += 44.0f;
         }
-        Text(g, L"DLSS 5 needs version 310.9.16.", *f_.sm, R(18, y, 234, 18), col::Muted());
+        Text(g, ui::Dlss5NeedsVersion310916, *f_.sm, R(18, y, 234, 18), col::Muted());
         y += 30.0f;
     }
     sepAt(y);
 
     // where the DLSS 5 settings are
     {
-        Text(g, L"DLSS 5 settings", *f_.bodyB, R(18, y + 12, 234, 22), col::Text());
+        Text(g, ui::Dlss5Settings, *f_.bodyB, R(18, y + 12, 234, 22), col::Text());
         const gp::RectF box = R(18, y + 40, 234, 96);
         FillRound(g, box, S(10), col::Alpha(col::Accent(), 24));
         StrokeRound(g, box, S(10), col::Alpha(col::Accent(), 90), max(1.0f, S(1)));
-        Text(g, L"In the game, open the OptiScaler menu and go to the Neural Rendering section to change the settings you want.",
+        Text(g, ui::InTheGameOpenTheOptiscalerMenu,
              *f_.sm, R(28, y + 48, 216, 82), col::Text(), 0, true);
     }
 
@@ -4500,7 +4506,7 @@ void App::Chip(gp::Graphics& g, const gp::RectF& r, const std::wstring& text, in
     {
         FillRound(g, r, S(8), col::Alpha(col::Accent(), 48));
         StrokeRound(g, r, S(8), col::Accent(), max(1.5f, S(1.5f)));
-        Text(g, L"Press keys\u2026", *f_.chip, r, col::Accent(), 1);
+        Text(g, ui::PressKeys, *f_.chip, r, col::Accent(), 1);
     }
     else
     {
@@ -4567,7 +4573,7 @@ void App::Paint(HDC dc, int W, int H)
         StrokeRound(g, badge, S(10), col::Alpha(col::Accent(), 110), max(1.0f, S(1)));
         Text(g, std::wstring(L"v") + kVersion, *f_.tiny, badge, col::Accent(), 1);
     }
-    Text(g, L"Capture any game \u00B7 FSR 4 and XeSS multi frame generation through OptiScaler", *f_.sm, R(84, 50, 620, 20),
+    Text(g, ui::CaptureAnyGameFsr4AndXess, *f_.sm, R(84, 50, 620, 20),
          col::Muted());
 
     {
@@ -4588,7 +4594,7 @@ void App::Paint(HDC dc, int W, int H)
         const bool hot = hover_ == kIdDepthToggle;
         FillRound(g, b, S(15), openD ? col::Alpha(col::Accent(), 90) : (hot ? col::RowHot() : col::Row()));
         StrokeRound(g, b, S(15), openD ? col::Accent() : (hot ? col::Accent2() : col::Line()), max(1.0f, S(openD ? 2 : 1)));
-        Text(g, openD ? L"Depth  \u2039" : L"Depth  \u203A", *f_.bodyB, b, col::Text(), 1);
+        Text(g, openD ? ui::Depth2 : ui::Depth3, *f_.bodyB, b, col::Text(), 1);
         AddHit(b, kIdDepthToggle);
     }
 
@@ -4599,14 +4605,14 @@ void App::Paint(HDC dc, int W, int H)
         StrokeRound(g, pill, S(15), col::Alpha(tone, 120), max(1.0f, S(1)));
         gp::SolidBrush dot(tone);
         g.FillEllipse(&dot, pill.X + S(14), pill.Y + S(10), S(10), S(10));
-        Text(g, stopping_ ? L"Stopping" : (running ? L"Capturing" : L"Ready"), *f_.bodyB,
+        Text(g, stopping_ ? ui::StoppingCapture : (running ? ui::Capturing : ui::CaptureReady), *f_.bodyB,
              gp::RectF(pill.X + S(32), pill.Y, S(82), pill.Height), tone);
     }
 
     // ---- quick modes ----
     {
-        static const wchar_t* const names[] = { L"NO FG MOD", L"x2 FG \u00B7 NEW GPU", L"x3 FG \u00B7 NEW GPU", L"x4 FG \u00B7 NEW GPU",
-                                                L"x2 FG \u00B7 OLD GPU", L"x3 FG \u00B7 OLD GPU", L"x4 FG \u00B7 OLD GPU" };
+        static const wchar_t* const names[] = { ui::NoFgMod, ui::X2FgNewGpu, ui::X3FgNewGpu, ui::X4FgNewGpu,
+                                                ui::X2FgOldGpu, ui::X3FgOldGpu, ui::X4FgOldGpu };
         for (int k = 0; k < 7; ++k)
         {
             const gp::RectF chip = R(24.0f + k * 127.0f, 72, 122, 26);
@@ -4623,8 +4629,8 @@ void App::Paint(HDC dc, int W, int H)
     // ---- games card ----
     const gp::RectF left = R(24, 100, 500, 766);
     Card(g, left);
-    Text(g, L"Choose a game", *f_.h2, R(44, 112, 300, 24), col::Text());
-    Text(g, L"Pick the window of the game you want to enhance", *f_.sm, R(44, 136, 340, 18), col::Muted());
+    Text(g, ui::ChooseAGame, *f_.h2, R(44, 112, 300, 24), col::Text());
+    Text(g, ui::PickTheWindowOfTheGameYou, *f_.sm, R(44, 136, 340, 18), col::Muted());
 
     {
         // Force Borderless on / off for the selected game
@@ -4634,7 +4640,7 @@ void App::Paint(HDC dc, int W, int H)
         const bool hotB = hover_ == kIdBorderless && pick;
         FillRound(g, bb, S(8), on ? col::Alpha(col::Green(), 40) : (hotB ? col::RowHot() : col::Row()));
         StrokeRound(g, bb, S(8), on ? col::Green() : (hotB ? col::Accent() : col::Line()), max(1.0f, S(1)));
-        Text(g, on ? L"Borderless: On" : L"Borderless: Off", *f_.chip, bb, pick ? (on ? col::Green() : (st_.upscale != 0 ? col::Muted() : col::Text())) : col::Muted(), 1);
+        Text(g, on ? ui::BorderlessOn : ui::BorderlessOff, *f_.chip, bb, pick ? (on ? col::Green() : (st_.upscale != 0 ? col::Muted() : col::Text())) : col::Muted(), 1);
         if (pick)
             AddHit(bb, kIdBorderless);
     }
@@ -4644,7 +4650,7 @@ void App::Paint(HDC dc, int W, int H)
         const bool hot = hover_ == kIdRefresh && !locked;
         FillRound(g, btn, S(8), hot ? col::RowHot() : col::Row());
         StrokeRound(g, btn, S(8), hot ? col::Accent() : col::Line(), max(1.0f, S(1)));
-        Text(g, L"Refresh", *f_.chip, btn, locked ? col::Muted() : col::Text(), 1);
+        Text(g, ui::Refresh, *f_.chip, btn, locked ? col::Muted() : col::Text(), 1);
         if (!locked)
             AddHit(btn, kIdRefresh);
     }
@@ -4685,12 +4691,12 @@ void App::Paint(HDC dc, int W, int H)
 
             Text(g, it.title, *f_.bodyB, gp::RectF(row.X + S(56), row.Y + S(8), rowW - S(56) - S(34), S(22)), col::Text());
 
-            std::wstring sub = it.exe.empty() ? L"protected process" : it.exe;
+            std::wstring sub = it.exe.empty() ? ui::ProtectedProcess : it.exe;
             sub += L"  \u00B7  " + std::to_wstring(it.w) + L"\u00D7" + std::to_wstring(it.h);
             if (it.fills)
-                sub += L"  \u00B7  borderless";
+                sub += ui::Borderless;
             if (it.minimized)
-                sub += L"  \u00B7  minimized";
+                sub += ui::Minimized;
             Text(g, sub, *f_.tiny, gp::RectF(row.X + S(56), row.Y + S(30), rowW - S(56) - S(34), S(18)), col::Muted());
 
             if (sel)
@@ -4709,7 +4715,7 @@ void App::Paint(HDC dc, int W, int H)
         }
 
         if (games_.empty())
-            Text(g, L"No windows found. Start the game, then press Refresh.", *f_.body, view, col::Muted(), 1);
+            Text(g, ui::NoWindowsFoundStartTheGameThen, *f_.body, view, col::Muted(), 1);
 
         // thin scrollbar
         const float content = static_cast<float>(games_.size()) * pitch - S(6);
@@ -4734,9 +4740,9 @@ void App::Paint(HDC dc, int W, int H)
 
     // ---- performance selector (under the game list) ----
     {
-        static const wchar_t* boostNames[] = { L"Off  (weak GPUs)", L"Light  (CPU priority)", L"Balanced  (CPU + GPU high)", L"Max  (strong GPUs)" };
+        static const wchar_t* boostNames[] = { ui::OffWeakGpus, ui::LightCpuPriority, ui::BalancedCpuGpuHigh, ui::MaxStrongGpus };
 
-        Text(g, L"Performance", *f_.bodyB, R(44, 612, 130, 24), col::Text());
+        Text(g, ui::Performance, *f_.bodyB, R(44, 612, 130, 24), col::Text());
 
         const gp::RectF selector = R(176, 608, 328, 32);
         const bool hot = hover_ == kIdBoostSelect;
@@ -4748,9 +4754,9 @@ void App::Paint(HDC dc, int W, int H)
 
     // ---- present mode selector ----
     {
-        static const wchar_t* presentNames[] = { L"Auto", L"Always no wait  (interval 0)", L"Always wait for vblank  (interval 1)", L"Classic  (like 2.2.0)", L"Lossless-style  (low latency)", L"Classic + half refresh", L"Classic + unlimited" };
+        static const wchar_t* presentNames[] = { ui::Auto, ui::AlwaysNoWaitInterval0, ui::AlwaysWaitForVblankInterval1, ui::ClassicLike220, ui::LosslessStyleLowLatency, ui::ClassicHalfRefresh, ui::ClassicUnlimited };
 
-        Text(g, L"Present mode", *f_.bodyB, R(44, 654, 130, 24), col::Text());
+        Text(g, ui::PresentMode, *f_.bodyB, R(44, 654, 130, 24), col::Text());
 
         const gp::RectF selector = R(176, 650, 328, 32);
         const bool hot = hover_ == kIdPresentSelect;
@@ -4762,30 +4768,30 @@ void App::Paint(HDC dc, int W, int H)
 
     // ---- present delay selector ----
     {
-        Text(g, L"Present delay", *f_.bodyB, R(44, 696, 130, 24), col::Text());
+        Text(g, ui::PresentDelay, *f_.bodyB, R(44, 696, 130, 24), col::Text());
 
         const gp::RectF selector = R(176, 692, 328, 32);
         const bool hot = hover_ == kIdDelaySelect;
         FillRound(g, selector, S(8), hot ? col::RowHot() : col::Row());
         StrokeRound(g, selector, S(8), hot ? col::Accent() : col::Line(), max(1.0f, S(1)));
         std::wstring t = std::to_wstring(st_.presentDelay) + L" ms";
-        if (st_.presentDelay == 0) t += L"  (off)";
+        if (st_.presentDelay == 0) t += ui::Off2;
         Text(g, t, *f_.chip, R(186, 698, 308, 22), col::Text());
         AddHit(selector, kIdDelaySelect);
     }
 
     // ---- output scaling ----
     {
-        static const wchar_t* lvN[] = { L"Quality", L"Balanced", L"Performance", L"Native" };
-        Text(g, L"Output scaling", *f_.bodyB, R(44, 738, 130, 24), col::Text());
+        static const wchar_t* lvN[] = { ui::Quality, ui::Balanced, ui::Performance, ui::Native };
+        Text(g, ui::OutputScaling, *f_.bodyB, R(44, 738, 130, 24), col::Text());
 
         const gp::RectF selector = R(176, 734, 232, 32);
         const bool hot = hover_ == kIdUpSelect;
         FillRound(g, selector, S(8), hot ? col::RowHot() : col::Row());
         StrokeRound(g, selector, S(8), hot ? col::Accent() : col::Line(), max(1.0f, S(1)));
-        std::wstring t = L"Off";
+        std::wstring t = ui::Off;
         if (st_.upscale != 0)
-            t = std::wstring(st_.upscale == 2 ? L"FSR 1  \u00B7  " : (st_.upscale == 3 ? L"NIS  \u00B7  " : (st_.upscale == 4 ? L"FSR3/4  \u00B7  " : (st_.upscale == 5 ? L"DLSS  \u00B7  " : L"Bilinear  \u00B7  ")))) +
+            t = std::wstring(st_.upscale == 2 ? ui::Fsr1 : (st_.upscale == 3 ? ui::Nis : (st_.upscale == 4 ? ui::Fsr34 : (st_.upscale == 5 ? ui::Dlss : ui::Bilinear)))) +
                 lvN[(st_.upscaleLevel >= 0 && st_.upscaleLevel <= 3) ? st_.upscaleLevel : 1];
         Text(g, t, *f_.chip, R(186, 740, 212, 22), col::Text());
         AddHit(selector, kIdUpSelect);
@@ -4795,7 +4801,7 @@ void App::Paint(HDC dc, int W, int H)
         const bool hotR = hover_ == kIdUpResize && pick;
         FillRound(g, rb, S(8), hotR ? col::RowHot() : col::Row());
         StrokeRound(g, rb, S(8), hotR ? col::Accent() : col::Line(), max(1.0f, S(1)));
-        Text(g, L"Resize", *f_.chip, rb, pick ? col::Text() : col::Muted(), 1);
+        Text(g, ui::Resize, *f_.chip, rb, pick ? col::Text() : col::Muted(), 1);
         if (pick)
             AddHit(rb, kIdUpResize);
     }
@@ -4803,7 +4809,7 @@ void App::Paint(HDC dc, int W, int H)
     // ---- sharpness slider (FSR 1: RCAS, NIS: sharpness); bilinear has none ----
     {
         const bool has = st_.upscale >= 2;
-        Text(g, L"Sharpness", *f_.bodyB, R(44, 800, 130, 24), has ? col::Text() : col::Muted());
+        Text(g, ui::Sharpness, *f_.bodyB, R(44, 800, 130, 24), has ? col::Text() : col::Muted());
         const gp::RectF track = R(176, 808, 268, 6);
         upSliderRect_ = track;
         FillRound(g, track, S(3), col::Row());
@@ -4820,7 +4826,7 @@ void App::Paint(HDC dc, int W, int H)
         }
         else
         {
-            Text(g, st_.upscale == 1 ? L"n/a" : L"off", *f_.chip, R(456, 800, 48, 22), col::Muted(), 2);
+            Text(g, st_.upscale == 1 ? ui::NA : ui::Off3, *f_.chip, R(456, 800, 48, 22), col::Muted(), 2);
         }
     }
 
@@ -4844,7 +4850,7 @@ void App::Paint(HDC dc, int W, int H)
         const bool hotS = hover_ == kIdProfileSave && pick;
         FillRound(g, sb, S(8), hotS ? col::Accent2() : col::Accent());
         StrokeRound(g, sb, S(8), col::Line(), max(1.0f, S(1)));
-        Text(g, L"Save", *f_.chip, sb, pick ? col::White() : col::Muted(), 1);
+        Text(g, ui::Save, *f_.chip, sb, pick ? col::White() : col::Muted(), 1);
         if (pick)
             AddHit(sb, kIdProfileSave);
 
@@ -4852,7 +4858,7 @@ void App::Paint(HDC dc, int W, int H)
         const bool hotL = hover_ == kIdProfileLoad && pick;
         FillRound(g, lb, S(8), hotL ? col::RowHot() : col::Row());
         StrokeRound(g, lb, S(8), hotL ? col::Accent() : col::Line(), max(1.0f, S(1)));
-        Text(g, L"Load", *f_.chip, lb, pick ? col::Text() : col::Muted(), 1);
+        Text(g, ui::Load, *f_.chip, lb, pick ? col::Text() : col::Muted(), 1);
         if (pick)
             AddHit(lb, kIdProfileLoad);
 
@@ -4862,7 +4868,7 @@ void App::Paint(HDC dc, int W, int H)
         StrokeRound(g, box, S(5), hotA ? col::Accent2() : col::Line(), max(1.0f, S(1)));
         if (st_.profileAuto)
             Text(g, L"\u2713", *f_.chip, box, col::White(), 1);
-        Text(g, L"Auto apply", *f_.sm, R(378, 773, 130, 22), col::Text());
+        Text(g, ui::AutoApply, *f_.sm, R(378, 773, 130, 22), col::Text());
         AddHit(R(352, 770, 156, 28), kIdProfileAuto);
     }
 
@@ -4873,11 +4879,11 @@ void App::Paint(HDC dc, int W, int H)
         if (hover_ == kIdVsync)
             StrokeRound(g, c, S(14), col::Alpha(col::Accent(), 150), max(1.0f, S(1)));
 
-        Text(g, L"VSync", *f_.h2, R(560, 114, 200, 24), col::Text());
-        Text(g, L"Sets OptiScaler ForceVsync. Auto leaves it to OptiScaler and gives the lowest latency.", *f_.sm,
+        Text(g, ui::VsyncLabel, *f_.h2, R(560, 114, 200, 24), col::Text());
+        Text(g, ui::VsyncHelp, *f_.sm,
              R(560, 140, 200, 40), col::Muted(), 0, true);
 
-        static const wchar_t* vsNames[] = { L"Auto", L"On \u00B7 0", L"On \u00B7 1", L"Off" };
+        static const wchar_t* vsNames[] = { ui::Auto, ui::On0, ui::On1, ui::Off };
         const gp::RectF chip = R(790, 131, 104, 30);
         const bool hotChip = hover_ == kIdVsync;
         FillRound(g, chip, S(8), hotChip ? col::RowHot() : col::Row());
@@ -4888,17 +4894,17 @@ void App::Paint(HDC dc, int W, int H)
 
     // ---- frame limiter card (RivaTuner, async) ----
     {
-        static const wchar_t* targetNames[] = { L"Off", L"Game", L"Host", L"Global" };
-        static const wchar_t* modeShort[] = { L"Async", L"Front edge sync", L"Back edge sync" };
+        static const wchar_t* targetNames[] = { ui::Off, ui::Game, ui::Host, ui::Global };
+        static const wchar_t* modeShort[] = { ui::Async2, ui::FrontEdgeSync2, ui::BackEdgeSync2 };
         const gp::RectF c = R(540, 204, 372, 164);
         Card(g, c);
-        Text(g, L"Frame limiter  ·  RivaTuner", *f_.h2, R(560, 214, 340, 24), col::Text());
+        Text(g, ui::FrameLimiterRivatuner, *f_.h2, R(560, 214, 340, 24), col::Text());
 
         const gp::RectF t = R(560, 246, 150, 30);
         const bool hotT = hover_ == kIdLimitTarget;
         FillRound(g, t, S(8), hotT ? col::RowHot() : col::Row());
         StrokeRound(g, t, S(8), hotT ? col::Accent() : col::Line(), max(1.0f, S(1)));
-        Text(g, std::wstring(L"Lock:  ") + targetNames[(st_.limitTarget >= 0 && st_.limitTarget <= 3) ? st_.limitTarget : 0], *f_.chip,
+        Text(g, std::wstring(ui::Lock) + targetNames[(st_.limitTarget >= 0 && st_.limitTarget <= 3) ? st_.limitTarget : 0], *f_.chip,
              R(570, 252, 134, 22), col::Text());
         AddHit(t, kIdLimitTarget);
 
@@ -4910,10 +4916,10 @@ void App::Paint(HDC dc, int W, int H)
         AddHit(mo, kIdLimitMode);
 
         std::wstring fpsText;
-        if (st_.limitFps == 0) fpsText = L"Refresh rate  (auto)";
-        else if (st_.limitFps == -2) fpsText = L"1/2 refresh  (auto)";
-        else if (st_.limitFps == -3) fpsText = L"1/3 refresh  (auto)";
-        else if (st_.limitFps == -4) fpsText = L"1/4 refresh  (auto)";
+        if (st_.limitFps == 0) fpsText = ui::RefreshRateAuto;
+        else if (st_.limitFps == -2) fpsText = ui::Text12RefreshAuto;
+        else if (st_.limitFps == -3) fpsText = ui::Text13RefreshAuto;
+        else if (st_.limitFps == -4) fpsText = ui::Text14RefreshAuto;
         else fpsText = std::to_wstring(st_.limitFps) + L" fps";
         const gp::RectF f = R(560, 284, 230, 30);
         const bool hotF = hover_ == kIdLimitFps;
@@ -4926,14 +4932,14 @@ void App::Paint(HDC dc, int W, int H)
         const bool hotA = hover_ == kIdLimitApply;
         FillRound(g, apply, S(8), hotA ? col::Accent2() : col::Accent());
         StrokeRound(g, apply, S(8), col::Line(), max(1.0f, S(1)));
-        Text(g, L"Apply", *f_.chip, apply, col::White(), 1);
+        Text(g, ui::Apply, *f_.chip, apply, col::White(), 1);
         AddHit(apply, kIdLimitApply);
 
         const gp::RectF offb = R(852, 284, 40, 30);
         const bool hotO = hover_ == kIdLimitOff;
         FillRound(g, offb, S(8), hotO ? col::RowHot() : col::Row());
         StrokeRound(g, offb, S(8), hotO ? col::Accent() : col::Line(), max(1.0f, S(1)));
-        Text(g, L"Off", *f_.chip, offb, col::Text(), 1);
+        Text(g, ui::Off, *f_.chip, offb, col::Text(), 1);
         AddHit(offb, kIdLimitOff);
 
         {
@@ -4943,7 +4949,7 @@ void App::Paint(HDC dc, int W, int H)
             StrokeRound(g, box, S(5), hot ? col::Accent2() : col::Line(), max(1.0f, S(1)));
             if (st_.limitAuto)
                 Text(g, L"\u2713", *f_.chip, box, col::White(), 1);
-            Text(g, L"Apply on START", *f_.body, R(586, 322, 120, 22), col::Text());
+            Text(g, ui::ApplyOnStart, *f_.body, R(586, 322, 120, 22), col::Text());
             AddHit(R(560, 320, 150, 26), kIdLimitAuto);
         }
         {
@@ -4954,10 +4960,10 @@ void App::Paint(HDC dc, int W, int H)
             StrokeRound(g, box, S(5), hot ? col::Accent2() : col::Line(), max(1.0f, S(1)));
             if (st_.optiFps)
                 Text(g, L"\u2713", *f_.chip, box, col::White(), 1);
-            Text(g, L"OptiScaler FPS = Hz", *f_.body, R(748, 322, 150, 22), col::Text());
+            Text(g, ui::OptiscalerFpsHz, *f_.body, R(748, 322, 150, 22), col::Text());
             AddHit(R(722, 320, 172, 26), kIdOptiFps);
         }
-        Text(g, limitInfo_.empty() ? std::wstring(L"Needs RivaTuner Statistics Server (async / front / back edge sync).") : limitInfo_,
+        Text(g, limitInfo_.empty() ? std::wstring(ui::NeedsRivatunerStatisticsServerAsyncFrontBack) : limitInfo_,
              *f_.tiny, R(560, 348, 332, 14), col::Muted());
     }
 
@@ -4965,15 +4971,15 @@ void App::Paint(HDC dc, int W, int H)
     {
         const gp::RectF c = R(540, 380, 372, 480);
         Card(g, c);
-        Text(g, L"Shortcuts", *f_.h2, R(560, 576, 200, 24), col::Text());
+        Text(g, ui::Shortcuts, *f_.h2, R(560, 576, 200, 24), col::Text());
 
         const gp::RectF reset = R(812, 576, 80, 24);
-        Text(g, L"Reset all", hover_ == kIdReset ? *f_.link : *f_.linkN, reset, hover_ == kIdReset ? col::Accent2() : col::Muted(), 2);
+        Text(g, ui::ResetAll, hover_ == kIdReset ? *f_.link : *f_.linkN, reset, hover_ == kIdReset ? col::Accent2() : col::Muted(), 2);
         AddHit(reset, kIdReset);
 
         // brings back the warnings that were hidden with "Don't show this warning again"
         const gp::RectF warnReset = R(640, 576, 170, 24);
-        Text(g, L"Show warnings again", hover_ == kIdWarnReset ? *f_.link : *f_.linkN, warnReset,
+        Text(g, ui::ShowWarningsAgain, hover_ == kIdWarnReset ? *f_.link : *f_.linkN, warnReset,
              hover_ == kIdWarnReset ? col::Accent2() : col::Muted(), 2);
         AddHit(warnReset, kIdWarnReset);
 
@@ -4981,7 +4987,7 @@ void App::Paint(HDC dc, int W, int H)
         {
 
 
-            Text(g, L"Frame Generation", *f_.bodyB,
+            Text(g, ui::FrameGeneration2, *f_.bodyB,
                 R(560, 386, 230, 24), col::Text());
 
             // multi frame generation: 2x / 3x / 4x (Intel MFG, Artur, Combo, Nvidia MFG)
@@ -5026,8 +5032,8 @@ void App::Paint(HDC dc, int W, int H)
                 if (!locked)
                     AddHit(R(x - 4, 447, w + 4, 26), id);
             };
-            tick(714, 92, L"HUD FIX", hudFix_, kIdHudFix);
-            tick(812, 80, L"ASYNC", asyncFg_, kIdAsyncFg);
+            tick(714, 92, ui::HudFix, hudFix_, kIdHudFix);
+            tick(812, 80, ui::Async3, asyncFg_, kIdAsyncFg);
         }
 
         // ---- Upscaler controls ----
@@ -5036,12 +5042,12 @@ void App::Paint(HDC dc, int W, int H)
                 L"Intel XeSS",
                 L"AMD FSR 3.1.6",
                 L"NVIDIA DLSS",
-                L"DLSS 3.7  (AMD / GTX 16)",
+                ui::Dlss37AmdGtx16,
                 L"AMD FSR 4.1.2",
                 L"DittoSR"
             };
 
-            Text(g, L"Opti Upscaler", *f_.bodyB,
+            Text(g, ui::OptiUpscaler, *f_.bodyB,
                 R(560, 448, 230, 24), col::Text());
 
             const gp::RectF selector = R(560, 472, 332, 30);
@@ -5059,13 +5065,13 @@ void App::Paint(HDC dc, int W, int H)
 
         // ---- "Run the upscaler on the picture" (sharpening + CAS + native upscaler pass) ----
         {
-            Text(g, L"Run the upscaler on the picture", *f_.bodyB, R(560, 508, 330, 24), col::Text());
+            Text(g, ui::RunTheUpscalerOnThePicture, *f_.bodyB, R(560, 508, 330, 24), col::Text());
 
             const gp::RectF onB = R(560, 534, 110, 30);
             const bool hotOn = hover_ == kIdPictureOn && !locked;
             FillRound(g, onB, S(8), hotOn ? col::Accent2() : col::Accent());
             StrokeRound(g, onB, S(8), col::Line(), max(1.0f, S(1)));
-            Text(g, L"Enable", *f_.chip, onB, col::White(), 1);
+            Text(g, ui::Enable, *f_.chip, onB, col::White(), 1);
             if (!locked)
                 AddHit(onB, kIdPictureOn);
 
@@ -5073,11 +5079,11 @@ void App::Paint(HDC dc, int W, int H)
             const bool hotOff = hover_ == kIdPictureOff && !locked;
             FillRound(g, offB, S(8), hotOff ? col::RowHot() : col::Row());
             StrokeRound(g, offB, S(8), hotOff ? col::Accent() : col::Line(), max(1.0f, S(1)));
-            Text(g, L"Off", *f_.chip, offB, col::Text(), 1);
+            Text(g, ui::Off, *f_.chip, offB, col::Text(), 1);
             if (!locked)
                 AddHit(offB, kIdPictureOff);
 
-            Text(g, pictureOn_ ? L"On" : L"Off", *f_.bodyB, R(800, 538, 92, 22), pictureOn_ ? col::Green() : col::Muted(), 2);
+            Text(g, pictureOn_ ? ui::On : ui::Off, *f_.bodyB, R(800, 538, 92, 22), pictureOn_ ? col::Green() : col::Muted(), 2);
         }
 
         float y = 606.0f;
@@ -5098,7 +5104,7 @@ void App::Paint(HDC dc, int W, int H)
                 const gp::RectF badge = R(680, y + 4, 52, 18);
                 FillRound(g, badge, S(9), col::Alpha(col::Green(), 36));
                 StrokeRound(g, badge, S(9), col::Alpha(col::Green(), 130), max(1.0f, S(1)));
-                Text(g, L"ON/OFF", *f_.tiny, badge, col::Green(), 1);
+                Text(g, ui::OnOff, *f_.tiny, badge, col::Green(), 1);
             }
 
             Chip(g, R(742, y + 5, 150, 26), ChipText(i), kIdShortcut0 + i, capturing_ == i);
@@ -5109,9 +5115,9 @@ void App::Paint(HDC dc, int W, int H)
             gp::Pen sep(col::Alpha(col::Line(), 150), max(1.0f, S(1)));
             g.DrawLine(&sep, S(560), S(y + 2), S(892), S(y + 2));
             Text(g, L"Ctrl+Shift+F10", *f_.tiny, R(560, y + 6, 100, 14), col::Accent());
-            Text(g, L"Focus overlay, open OptiScaler menu", *f_.tiny, R(668, y + 6, 224, 14), col::Muted());
+            Text(g, ui::FocusOverlayOpenOptiscalerMenu, *f_.tiny, R(668, y + 6, 224, 14), col::Muted());
             Text(g, L"Ctrl+Shift+F11", *f_.tiny, R(560, y + 23, 100, 14), col::Accent());
-            Text(g, L"Mouse + keyboard: game / overlay", *f_.tiny, R(668, y + 23, 224, 14), col::Muted());
+            Text(g, ui::MouseKeyboardGameOverlay, *f_.tiny, R(668, y + 23, 224, 14), col::Muted());
         }
     }
 
@@ -5126,10 +5132,10 @@ void App::Paint(HDC dc, int W, int H)
             Card(g, panel);
             struct LinkChip { const wchar_t* label; const wchar_t* value; float x; float w; int id; bool heart; };
             static const LinkChip chips[] = {
-                { L"Developer", L"MK-JH", 32, 128, kIdLinkJH, false },
-                { L"Telegram Channel", L"MK-JH_APPS", 168, 168, kIdLinkApps, false },
-                { L"Archive", L"MK-JH_ARCHIVE", 344, 168, kIdLinkArchive, false },
-                { L"Source code", L"GitHub", 520, 122, kIdLinkGithub, true },
+                { ui::Developer, L"MK-JH", 32, 128, kIdLinkJH, false },
+                { ui::TelegramChannel, L"MK-JH_APPS", 168, 168, kIdLinkApps, false },
+                { ui::Archive, L"MK-JH_ARCHIVE", 344, 168, kIdLinkArchive, false },
+                { ui::SourceCode, L"GitHub", 520, 122, kIdLinkGithub, true },
             };
             for (const LinkChip& c : chips)
             {
@@ -5158,21 +5164,20 @@ void App::Paint(HDC dc, int W, int H)
         }
         else if (running)
         {
-            status = L"Capturing \"" + targetTitle_ + L"\". " + KeyName(st_.menuKey) + L" opens the OptiScaler menu, " +
-                     HotkeyText(st_.launcher) + L" shows this window.";
+            status = std::format(ui::CapturingStatus, targetTitle_, KeyName(st_.menuKey), HotkeyText(st_.launcher));
         }
         else if (selected_ >= 0 && selected_ < static_cast<int>(games_.size()))
         {
-            status = L"Ready: " + games_[selected_].title;
+            status = std::format(ui::CaptureReadyTitle, games_[selected_].title);
         }
         else
         {
-            status = L"Pick a game from the list to begin.";
+            status = ui::PickAGameFromTheListTo;
         }
         Text(g, status, *f_.sm, R(24, 876, 640, 28), tone, 0, true);
 
         const bool noPick = !running && (selected_ < 0 || selected_ >= static_cast<int>(games_.size()));
-        Button(g, R(672, 900, 240, 46), running ? (stopping_ ? L"STOPPING\u2026" : L"STOP") : L"START", noPick, running);
+        Button(g, R(672, 900, 240, 46), running ? (stopping_ ? ui::StoppingCapture2 : ui::StopCapture2) : ui::StartCapture, noPick, running);
     }
 
     // ---- warning dialog (on top of everything) ----
@@ -5258,7 +5263,7 @@ int WINAPI wWinMain(HINSTANCE inst, HINSTANCE, PWSTR, int)
     ULONG_PTR token = 0;
     if (gp::GdiplusStartup(&token, &input, nullptr) != gp::Ok)
     {
-        MessageBoxW(nullptr, L"Could not start GDI+.", L"OptiCaptureHost", MB_OK | MB_ICONERROR);
+        MessageBoxW(nullptr, ui::CouldNotStartGdi, L"OptiCaptureHost", MB_OK | MB_ICONERROR);
         return 1;
     }
 
@@ -5268,7 +5273,7 @@ int WINAPI wWinMain(HINSTANCE inst, HINSTANCE, PWSTR, int)
         if (app.Create(inst))
             code = app.Loop();
         else
-            MessageBoxW(nullptr, L"Could not create the window.", L"OptiCaptureHost", MB_OK | MB_ICONERROR);
+            MessageBoxW(nullptr, ui::CouldNotCreateTheWindow, L"OptiCaptureHost", MB_OK | MB_ICONERROR);
     }
 
     gp::GdiplusShutdown(token);

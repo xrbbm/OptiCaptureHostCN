@@ -31,6 +31,17 @@ target_compile_definitions(OptiCaptureLauncher PRIVATE UNICODE _UNICODE NOMINMAX
 target_compile_options(OptiCaptureLauncher PRIVATE /W4 /permissive- /EHsc /utf-8)
 target_link_libraries(OptiCaptureLauncher PRIVATE gdiplus user32 gdi32 shell32 dwmapi)
 
+set(OC_ZH_CN_DIR "" CACHE PATH "Directory containing the generated ui_zh_CN.inc (empty builds English)")
+if(OC_ZH_CN_DIR)
+    if(NOT EXISTS "${OC_ZH_CN_DIR}/ui_zh_CN.inc")
+        message(FATAL_ERROR "Missing generated UI catalog: ${OC_ZH_CN_DIR}/ui_zh_CN.inc")
+    endif()
+    foreach(app OptiCaptureHost OptiCaptureLauncher)
+        target_compile_definitions(${app} PRIVATE OC_UI_ZH_CN)
+        target_include_directories(${app} PRIVATE "${OC_ZH_CN_DIR}")
+    endforeach()
+endif()
+
 # Optional: the ReShade depth add-on (OptiCaptureDepth.addon64). It is NOT part of the normal build (EXCLUDE_FROM_ALL): the workflow builds it
 # on its own, so a problem with it can never stop the host or the launcher from building. Needs ReShade's public headers
 # (third_party/reshade/include, fetched by the workflow; BSD-3-Clause).

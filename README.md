@@ -17,6 +17,15 @@
 
 ---
 
+## 简体中文构建
+
+- 在本 fork 的 [构建工作流](https://github.com/xrbbm/OptiCaptureHostCN/actions/workflows/build.yml?query=branch%3Azh-cn) 中点 `Run workflow`，选择 `zh-cn`。推送到 `zh-cn` 也会自动构建。
+- 在成功运行的 **Artifacts** 下载 `OptiCaptureHost-zh-CN-win64`。其中的 ZIP 包含 Launcher、Host、许可证和本次构建的对应源代码；如需 OptiScaler 等运行时，请按下文另行安装。
+- `src/ui_strings.inc` 只登记本项目的界面文案。新增或改动的条目由 Actions 的本地翻译模型处理，不需要 API Key 或人工校对。编译成功后，译文自动保存到 `i18n/zh-CN.json`。文件名、配置键、第三方菜单和日志保持不变。
+- 产物的 `source/` 附带本次构建的译文；在该目录运行 `cmake -S . -B build -A x64 -DOC_ZH_CN_DIR=generated`，再运行 `cmake --build build --config Release` 可重新编译。
+
+---
+
 ## What is this?
 
 **Run OptiScaler in any game, app or window.** OptiCaptureHost is a window capture plus a Direct3D 12 overlay that unlocks DLSS 5, DLSS, FSR 3/4 and XeSS upscaling,

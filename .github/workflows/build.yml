@@ -1,18 +1,59 @@
-name: build
+name: 简体中文 Windows 构建
 
-# Builds only when you start them: Actions tab -> build -> Run workflow. It does NOT make a release.
-# Pushes and pull requests no longer start a build by themselves.
 on:
   workflow_dispatch:
+  push:
+    branches: [zh-cn]
 
 permissions:
   contents: read
 
+concurrency:
+  group: zh-cn-build-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
-  windows:
-    runs-on: windows-latest
+  translate:
+    if: github.ref == 'refs/heads/zh-cn'
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
     steps:
       - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: i18n/package-lock.json
+      - uses: actions/cache@v4
+        with:
+          path: ${{ runner.temp }}/opticapture-models
+          key: opus-mt-en-zh-q8-046f55aec303cdee3e0318604406d4df20f1e8ea
+      - run: npm ci --prefix i18n --ignore-scripts --no-audit --no-fund
+      - name: Translate and validate the UI catalog
+        env:
+          MODEL_CACHE_DIR: ${{ runner.temp }}/opticapture-models
+        run: node i18n/translate.mjs generated
+      - uses: actions/upload-artifact@v4
+        with:
+          name: zh-cn-catalog
+          path: generated/
+          if-no-files-found: error
+          retention-days: 1
+
+  windows:
+    needs: translate
+    runs-on: windows-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/download-artifact@v4
+        with:
+          name: zh-cn-catalog
+          path: generated
 
       # NVIDIA's DLSS SDK (headers + static library), from NVIDIA's own public repository, pinned to the release tag v6.8.0.
       # If this step fails the host is built without DLSS (the host's log then says so).
@@ -63,7 +104,7 @@ jobs:
           Get-ChildItem third_party/reshade -Recurse -File | ForEach-Object { Write-Host $_.FullName }
 
       - name: Configure
-        run: cmake -S . -B build -A x64
+        run: cmake -S . -B build -A x64 "-DOC_ZH_CN_DIR=${{ github.workspace }}/generated"
 
       - name: Build
         run: cmake --build build --config Release
@@ -79,7 +120,7 @@ jobs:
           New-Item -ItemType Directory -Force dist | Out-Null
           Copy-Item build/Release/OptiCaptureHost.exe dist/
           Copy-Item build/Release/OptiCaptureLauncher.exe dist/
-          Copy-Item README.md dist/
+          Copy-Item README.md, LICENSE, NOTICE.md dist/
           # optional ReShade depth helper (only when it was built)
           if (Test-Path build/Release/OptiCaptureDepth.addon64) {
             New-Item -ItemType Directory -Force "dist/ReShade depth" | Out-Null
@@ -88,11 +129,48 @@ jobs:
             Copy-Item reshade/README.txt "dist/ReShade depth/"
             if (Test-Path third_party/reshade/LICENSE.md) { Copy-Item third_party/reshade/LICENSE.md "dist/ReShade depth/ReShade-LICENSE.txt" }
           } else { Write-Host "::warning::the ReShade depth add-on was not built; the package has no 'ReShade depth' folder" }
-          Compress-Archive -Path dist/* -DestinationPath OptiCaptureHost-win64.zip -Force
 
-      # No release is made automatically. The build is attached to the run: Actions tab -> the run -> Artifacts (OptiCaptureHost).
-      # Make the release yourself: Releases -> Draft a new release, and attach the files.
+          # Ship the source for this exact build, including the generated locale.
+          $sourceZip = Join-Path $env:RUNNER_TEMP 'opticapture-source.zip'
+          git archive --format=zip --output="$sourceZip" HEAD
+          if ($LASTEXITCODE -ne 0) { throw 'could not archive the build source' }
+          Expand-Archive -LiteralPath $sourceZip -DestinationPath dist/source
+          New-Item -ItemType Directory -Force dist/source/generated | Out-Null
+          Copy-Item generated/zh-CN.json, generated/ui_zh_CN.inc dist/source/generated/
+          if (Test-Path build/Release/OptiCaptureDepth.addon64) {
+            Copy-Item -Recurse third_party/reshade dist/source/third_party/reshade
+          }
+          Compress-Archive -Path dist/* -DestinationPath OptiCaptureHost-zh-CN-win64.zip -Force
+
+      # Binaries are attached to this run, not published as a Release.
       - uses: actions/upload-artifact@v4
         with:
-          name: OptiCaptureHost
-          path: dist
+          name: OptiCaptureHost-zh-CN-win64
+          path: OptiCaptureHost-zh-CN-win64.zip
+          if-no-files-found: error
+
+  save-translations:
+    needs: [translate, windows]
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: zh-cn-catalog
+          path: generated
+      - name: Save the compiled translation for the next build
+        run: |
+          current=$(git ls-remote origin refs/heads/zh-cn | cut -f1)
+          if [ "$current" != "$GITHUB_SHA" ]; then
+            echo 'zh-cn has advanced; not writing an outdated catalog.'
+            exit 0
+          fi
+          cp generated/zh-CN.json i18n/zh-CN.json
+          git add -- i18n/zh-CN.json
+          if git diff --cached --quiet; then exit 0; fi
+          git -c user.name='github-actions[bot]' -c user.email='41898282+github-actions[bot]@users.noreply.github.com' \
+            commit -m 'chore(i18n): update Simplified Chinese cache'
+          git push origin HEAD:refs/heads/zh-cn
