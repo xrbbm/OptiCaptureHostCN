@@ -40,6 +40,37 @@ const glossary = new Map(Object.entries({
   'save': '保存', 'load': '加载', 'sharpness': '锐度', 'shortcuts': '快捷键',
   'start': '启动', 'start capture': '开始捕获', 'stop': '停止', 'stop capture': '停止捕获',
   'sync interval': '同步间隔', 'to': '至', 'wait': '等待',
+  'apply on start': '启动时应用', 'archive': '归档', 'enable': '启用', 'global': '全局',
+  'hold ctrl, shift or alt together with the key (so it does not clash with the game).': '按住 Ctrl、Shift 或 Alt 的同时按下该按键（避免与游戏快捷键冲突）。',
+  'installed': '已安装', 'no fg mod': '不使用 FG 模组', 'opti upscaler': 'Opti 升频器',
+  'run the upscaler on the picture': '在画面上运行升频器',
+  'source code': '源代码',
+  'waiting': '等待', 'waiting for start': '等待启动',
+  'the limiter will be applied every time you press start.': '每次按下 START，都会应用帧率限制。',
+  'the limiter is applied only with the apply button.': '只能通过“应用”按钮启用帧率限制。',
+  'tick opticapturedepth on in reshade\'s menu.': '在 ReShade 菜单中勾选 OptiCaptureDepth。',
+  'download nvngx_dlssnr.dll': '下载 nvngx_dlssnr.dll',
+  'could not start opticapturehost.exe (error {0}).': '无法启动 OptiCaptureHost.exe（错误 {0}）。',
+  'profile {0} saved for {1} ({2}).': '已为 {1} 保存配置文件 {0}（{2}）。',
+  'profile {0} of {1} is empty. press save to store the current settings in it.': '配置文件 {0}（{1}）为空。按“保存”将当前设置保存到此配置文件中。',
+  'profile {0} of {1} applied (optiscaler.ini replaced).': '已应用配置文件 {0}（{1}）（已替换 OptiScaler.ini）。',
+  'sets optiscaler forcevsync. auto leaves it to optiscaler and gives the lowest latency.': '设置 OptiScaler 的 ForceVsync。选择“自动”时交由 OptiScaler 控制，以获得最低延迟。',
+  'the frame limiter uses rivatuner statistics server (rtss), and it was not found on this pc.': '未在此电脑上找到帧率限制器所需的 RivaTuner Statistics Server（RTSS）。',
+  'install rtss (it comes with msi afterburner, or from guru3d.com), start it, then press apply again.': '安装并启动 RTSS（可随 MSI Afterburner 一同安装，或从 guru3d.com 下载），然后再次点击“应用”。',
+  'rtss must be running while you play: it does the actual limiting.': '游玩时必须保持 RTSS 运行；实际的帧率限制由它执行。',
+  'x2 fg mod (new gpu)': 'x2 FG 模组（新 GPU）', 'x3 fg mod (new gpu)': 'x3 FG 模组（新 GPU）',
+  'on  (forcevsync = true, syncinterval = 0)': '开启（ForceVsync = true，SyncInterval = 0）',
+  'on  (forcevsync = true, syncinterval = 1)': '开启（ForceVsync = true，SyncInterval = 1）',
+  'off  (forcevsync = false)': '关闭（ForceVsync = false）',
+  'dlss 5 enabled ([dlssnr] enabled = true).': 'DLSS 5 已启用（[DlssNr] Enabled = true）。',
+  'dlss 5 disabled ([dlssnr] enabled = auto).': 'DLSS 5 已禁用（[DlssNr] Enabled = auto）。',
+  'hud fix on ([optifg] hudfix = true).': 'HUD FIX 已启用（[OptiFG] HUDFix = true）。',
+  'hud fix off ([optifg] hudfix = auto).': 'HUD FIX 已关闭（[OptiFG] HUDFix = auto）。',
+  'async on ([fsrfg] allowasync = true).': '异步已启用（[FSRFG] AllowAsync = true）。',
+  'async off ([fsrfg] allowasync = auto).': '异步已关闭（[FSRFG] AllowAsync = auto）。',
+  'on: [dlssnr] enabled = true': '开启：[DlssNr] Enabled = true',
+  'off: [dlssnr] enabled = auto': '关闭：[DlssNr] Enabled = auto',
+  'opticapturehost  -  by mk-jh': 'OptiCaptureHost  -  作者：MK-JH',
 }));
 const terms = [
   'RivaTuner Statistics Server', 'OptiCaptureLauncher', 'OptiCaptureHost', 'Windows Graphics Capture',
@@ -48,6 +79,7 @@ const terms = [
   'DXGI', 'VSync', 'XeSS', 'XeLL', 'xell', 'NVIDIA', 'Nvidia', 'GitHub', 'NIS', 'NGX', 'GDI+', 'RTSS',
   'GPUs', 'GPU', 'CPU', 'AMD', 'Intel', 'FPS', 'fps', 'Hz', 'ms', 'MFG', 'FG', 'RTX', 'GTX',
   'AntiLag2', 'Ctrl', 'Shift', 'Alt', 'Esc', 'DittoSR', 'MK-JH', 'Artur', 'Nukem', 'Telegram',
+  'DlssNr', 'SyncInterval', 'Enabled', 'OptiFG', 'HUDFix', 'FSRFG', 'AllowAsync', 'true', 'false', 'auto',
 ].sort((a, b) => b.length - a.length).map(s => s.replace(/[.*+?^${}()|[\]\\]/gu, '\\$&'));
 const protectedPattern = new RegExp(`(${[
   String.raw`\{[0-9]+\}`,
@@ -119,7 +151,12 @@ try {
 const pending = new Map();
 for (const [id, source] of catalog) {
   const cached = oldCache.entries[id];
-  if (cached?.source !== source || !validTranslation(source, cached.translation)) {
+  const expected = source.split('\n').map(line => {
+    const fixed = glossary.get(line.trim().toLowerCase());
+    return fixed === undefined ? line : withEdges(line, () => fixed);
+  }).join('\n');
+  if (cached?.source !== source || !validTranslation(source, cached.translation) ||
+      (expected !== source && cached.translation !== expected)) {
     pending.set(id, source);
   }
 }
