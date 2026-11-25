@@ -137,7 +137,7 @@
     },
     "Global": {
       "source": "Global",
-      "translation": "全球全球"
+      "translation": "全局"
     },
     "RtssDidNotAcceptTheChange": {
       "source": "RTSS did not accept the change.",
@@ -161,15 +161,15 @@
     },
     "NoFgMod": {
       "source": "NO FG MOD",
-      "translation": "无 无 无 无无 无 无 无 FG 模组"
+      "translation": "不使用 FG 模组"
     },
     "X2FgModNewGpu": {
       "source": "x2 FG MOD (NEW GPU)",
-      "translation": "x2x2 FG 部 (部) GPU)"
+      "translation": "x2 FG 模组（新 GPU）"
     },
     "X3FgModNewGpu": {
       "source": "x3 FG MOD (NEW GPU)",
-      "translation": "x3 个 FG 部 (部) GPU)"
+      "translation": "x3 FG 模组（新 GPU）"
     },
     "X4FgModNewGpu": {
       "source": "x4 FG MOD (NEW GPU)",
@@ -361,7 +361,7 @@
     },
     "HoldCtrlShiftOrAltTogetherWith": {
       "source": "Hold Ctrl, Shift or Alt together with the key (so it does not clash with the game).",
-      "translation": "搁置搁置搁置, 搁置搁置 Ctrl, Shift 或 Alt 与密钥一起( 以便它不会与游戏冲突) 。"
+      "translation": "按住 Ctrl、Shift 或 Alt 的同时按下该按键（避免与游戏快捷键冲突）。"
     },
     "SavedToOptiscalerIni": {
       "source": "Saved to OptiScaler.ini.",
@@ -389,15 +389,15 @@
     },
     "OnForcevsyncTrueSyncinterval0": {
       "source": "On  (ForceVsync = true, SyncInterval = 0)",
-      "translation": "上(ForceVsync=真实,同步互动=0)"
+      "translation": "开启（ForceVsync = true，SyncInterval = 0）"
     },
     "OnForcevsyncTrueSyncinterval1": {
       "source": "On  (ForceVsync = true, SyncInterval = 1)",
-      "translation": "上(ForceVsync=真实,同步互动=1)"
+      "translation": "开启（ForceVsync = true，SyncInterval = 1）"
     },
     "OffForcevsyncFalse": {
       "source": "Off  (ForceVsync = false)",
-      "translation": "关闭( ForceVsync = 假)"
+      "translation": "关闭（ForceVsync = false）"
     },
     "StopTheHostFirstThenReset": {
       "source": "Stop the host first, then reset.",
@@ -481,7 +481,7 @@
     },
     "RefreshRateAuto": {
       "source": "Refresh rate  (auto)",
-      "translation": "刷新率( 自动)"
+      "translation": "更新率(auto)"
     },
     "Text12RefreshRateAuto": {
       "source": "1/2 refresh rate  (auto)",
@@ -505,27 +505,27 @@
     },
     "Dlss5EnabledDlssnrEnabledTrue": {
       "source": "DLSS 5 enabled ([DlssNr] Enabled = true).",
-      "translation": "启用 DLSS 5 ([DlsNr] 启用= 真实) 。"
+      "translation": "DLSS 5 已启用（[DlssNr] Enabled = true）。"
     },
     "Dlss5DisabledDlssnrEnabledAuto": {
       "source": "DLSS 5 disabled ([DlssNr] Enabled = auto).",
-      "translation": "DLSS 5 已禁用 ([DlsNr] 已启用 = 自动 ) 。"
+      "translation": "DLSS 5 已禁用（[DlssNr] Enabled = auto）。"
     },
     "HudFixOnOptifgHudfixTrue": {
       "source": "HUD FIX on ([OptiFG] HUDFix = true).",
-      "translation": "HUD FIX 正在([[OptiFG] HUDFix = true)中 ([[Oppti"
+      "translation": "HUD FIX 已启用（[OptiFG] HUDFix = true）。"
     },
     "HudFixOffOptifgHudfixAuto": {
       "source": "HUD FIX off ([OptiFG] HUDFix = auto).",
-      "translation": "关闭 HUD FIX ([OptiFG] HUDFix = 自动) 。"
+      "translation": "HUD FIX 已关闭（[OptiFG] HUDFix = auto）。"
     },
     "AsyncOnFsrfgAllowasyncTrue": {
       "source": "ASYNC on ([FSRFG] AllowAsync = true).",
-      "translation": "ASYNC on ([FSRFG] 允许Async = 真实) 。"
+      "translation": "异步已启用（[FSRFG] AllowAsync = true）。"
     },
     "AsyncOffFsrfgAllowasyncAuto": {
       "source": "ASYNC off ([FSRFG] AllowAsync = auto).",
-      "translation": "关闭ASYNC ([FSRFG] 允许Async = 自动)。"
+      "translation": "异步已关闭（[FSRFG] AllowAsync = auto）。"
     },
     "TheDownloadLinkForNvngxDlssnrDll": {
       "source": "The download link for nvngx_dlssnr.dll is not set yet.",
@@ -541,11 +541,11 @@
     },
     "TheLimiterWillBeAppliedEveryTime": {
       "source": "The limiter will be applied every time you press START.",
-      "translation": "每次按《裁武条约》时,将适用限制。"
+      "translation": "每次按下 START，都会应用帧率限制。"
     },
     "TheLimiterIsAppliedOnlyWithThe": {
       "source": "The limiter is applied only with the Apply button.",
-      "translation": "限制只应用应用 应用按钮。"
+      "translation": "只能通过“应用”按钮启用帧率限制。"
     },
     "MultiFrameGenerationCountIsForIntel": {
       "source": "Multi frame generation count is for Intel MFG, Artur, Combo and Nvidia MFG.",
@@ -665,7 +665,7 @@
     },
     "WaitingForStart": {
       "source": "Waiting for START",
-      "translation": "等待裁武条约"
+      "translation": "等待启动"
     },
     "ChooseOutputScalingFsr34Or": {
       "source": "Choose Output scaling FSR 3/4 or DLSS, then START.",
@@ -697,7 +697,7 @@
     },
     "TickOpticapturedepthOnInReshadeSMenu": {
       "source": "Tick OptiCaptureDepth on in ReShade's menu.",
-      "translation": "滴滴滴滴 滴滴 OptiCaptureDepth 中 ReShade菜单。"
+      "translation": "在 ReShade 菜单中勾选 OptiCaptureDepth。"
     },
     "WaitingForTheAddOn": {
       "source": "Waiting for the add-on",
@@ -709,7 +709,7 @@
     },
     "Waiting": {
       "source": "Waiting",
-      "translation": "等待等待"
+      "translation": "等待"
     },
     "OutputScalingMustBeFsr34": {
       "source": "Output scaling must be FSR 3/4 or DLSS (not Off or NIS).",
@@ -721,7 +721,7 @@
     },
     "Installed": {
       "source": "Installed",
-      "translation": "已安装已安装"
+      "translation": "已安装"
     },
     "InstallReshadeFiles": {
       "source": "Install ReShade files",
@@ -741,11 +741,11 @@
     },
     "OnDlssnrEnabledTrue": {
       "source": "On: [DlssNr] Enabled = true",
-      "translation": "时间 : [DlsNr] 已启用 = 真实"
+      "translation": "开启：[DlssNr] Enabled = true"
     },
     "OffDlssnrEnabledAuto": {
       "source": "Off: [DlssNr] Enabled = auto",
-      "translation": "关闭 : [DlsNr] 已启用 = 自动"
+      "translation": "关闭：[DlssNr] Enabled = auto"
     },
     "RequiredFile": {
       "source": "Required file",
@@ -765,7 +765,7 @@
     },
     "DownloadNvngxDlssnrDll": {
       "source": "Download nvngx_dlssnr.dll",
-      "translation": "下载下载 nvngx_dlssnr.dll"
+      "translation": "下载 nvngx_dlssnr.dll"
     },
     "DownloadItAndPlaceItExactlyNext": {
       "source": "Download it and place it exactly next to the program.",
@@ -973,11 +973,11 @@
     },
     "Text12RefreshAuto": {
       "source": "1/2 refresh  (auto)",
-      "translation": "1/2 刷新( 自动)"
+      "translation": "1/2 刷新 (auto)"
     },
     "Text13RefreshAuto": {
       "source": "1/3 refresh  (auto)",
-      "translation": "1/3 刷新( 自动)"
+      "translation": "1/3 新鲜(auto)"
     },
     "Text14RefreshAuto": {
       "source": "1/4 refresh  (auto)",
@@ -985,7 +985,7 @@
     },
     "ApplyOnStart": {
       "source": "Apply on START",
-      "translation": "应用裁武条约"
+      "translation": "启动时应用"
     },
     "OptiscalerFpsHz": {
       "source": "OptiScaler FPS = Hz",
@@ -1025,15 +1025,15 @@
     },
     "OptiUpscaler": {
       "source": "Opti Upscaler",
-      "translation": "优化升级"
+      "translation": "Opti 升频器"
     },
     "RunTheUpscalerOnThePicture": {
       "source": "Run the upscaler on the picture",
-      "translation": "运行图片上上标的显示器"
+      "translation": "在画面上运行升频器"
     },
     "Enable": {
       "source": "Enable",
-      "translation": "启用启用"
+      "translation": "启用"
     },
     "On": {
       "source": "On",
@@ -1061,11 +1061,11 @@
     },
     "Archive": {
       "source": "Archive",
-      "translation": "存档归档"
+      "translation": "归档"
     },
     "SourceCode": {
       "source": "Source code",
-      "translation": "源代码源代码"
+      "translation": "源代码"
     },
     "PickAGameFromTheListTo": {
       "source": "Pick a game from the list to begin.",
@@ -1097,7 +1097,7 @@
     },
     "HostStartFailed": {
       "source": "Could not start OptiCaptureHost.exe (error {0}).",
-      "translation": "无法启动无法启动 OptiCaptureHost.exe (危险 {0})."
+      "translation": "无法启动 OptiCaptureHost.exe（错误 {0}）。"
     },
     "HostStopped": {
       "source": "The capture host stopped (code {0}). See OptiCaptureHost.log.",
@@ -1117,11 +1117,11 @@
     },
     "ProfileSaved": {
       "source": "Profile {0} saved for {1} ({2}).",
-      "translation": "简介简介 {0} 保存保存 {1} ({2})."
+      "translation": "已为 {1} 保存配置文件 {0}（{2}）。"
     },
     "EmptyProfile": {
       "source": "Profile {0} of {1} is empty. Press Save to store the current settings in it.",
-      "translation": "简介简介 {0} 唱唱唱唱《联 合 唱 唱 的 童 年 月 的 {1} 。按保存键以存储其中的当前设置。"
+      "translation": "配置文件 {0}（{1}）为空。按“保存”将当前设置保存到此配置文件中。"
     },
     "ProfileApplyFailed": {
       "source": "Could not apply the saved profile of {0}. Check the file and permissions.",
@@ -1129,7 +1129,7 @@
     },
     "ProfileApplied": {
       "source": "Profile {0} of {1} applied (OptiScaler.ini replaced).",
-      "translation": "简介简介 {0} 唱唱唱唱《联 合 唱 唱 的 童 年 月 的 {1} (a) 适用(OptiScaler.ini 替换)"
+      "translation": "已应用配置文件 {0}（{1}）（已替换 OptiScaler.ini）。"
     },
     "ConfirmProfileApply": {
       "source": "You saved settings (profile {0}) for {1} earlier.\n\nDo you want to apply them now? This replaces the OptiScaler.ini next to the launcher with the one saved for this game.",
@@ -1137,7 +1137,7 @@
     },
     "RtssInstallHelp": {
       "source": "The frame limiter uses RivaTuner Statistics Server (RTSS), and it was not found on this PC.\n\nInstall RTSS (it comes with MSI Afterburner, or from guru3d.com), start it, then press Apply again.\n\nRTSS must be running while you play: it does the actual limiting.",
-      "translation": "框架限制器使用 RivaTuner Statistics Server (RTSS), 并且未在此 PC 上找到 。\n\n安装安装 RTSS (它与 MSI Afterburner,或来自 guru3d.com),然后按 Apply 键再启动。\n\nRTSS 必须在播放时运行: 它实际上有限制 。"
+      "translation": "未在此电脑上找到帧率限制器所需的 RivaTuner Statistics Server（RTSS）。\n\n安装并启动 RTSS（可随 MSI Afterburner 一同安装，或从 guru3d.com 下载），然后再次点击“应用”。\n\n游玩时必须保持 RTSS 运行；实际的帧率限制由它执行。"
     },
     "ShortcutInUse": {
       "source": "Already used by \"{0}\".",
@@ -1241,7 +1241,7 @@
     },
     "LauncherTitle": {
       "source": "OptiCaptureHost  -  by MK-JH",
-      "translation": "OptiCaptureHost  - 截止 - 截止 MK-JH"
+      "translation": "OptiCaptureHost  -  作者：MK-JH"
     },
     "DLSS5Title": {
       "source": "DLSS 5",
@@ -1257,7 +1257,7 @@
     },
     "VsyncHelp": {
       "source": "Sets OptiScaler ForceVsync. Auto leaves it to OptiScaler and gives the lowest latency.",
-      "translation": "套套套套 OptiScaler ForceVsync自动保留它到 OptiScaler 且给与最卑贱的延缓。"
+      "translation": "设置 OptiScaler 的 ForceVsync。选择“自动”时交由 OptiScaler 控制，以获得最低延迟。"
     },
     "GameFramesCapture": {
       "source": "Game frames (capture)",
