@@ -5,11 +5,11 @@
   "entries": {
     "IntelMfgXellNewGpu": {
       "source": "Intel MFG (xell/new GPU)",
-      "translation": "Intel MFG (xell/新 GPU)"
+      "translation": "Intel MFG（xell / 新 GPU）"
     },
     "ArturMfgOldNewGpu": {
       "source": "Artur MFG (old/new GPU)",
-      "translation": "Artur MFG (旧/新) GPU)"
+      "translation": "Artur MFG（旧/新 GPU）"
     },
     "NoFg": {
       "source": "NO FG",
@@ -17,31 +17,31 @@
     },
     "IntelFgXellNewGpu": {
       "source": "Intel FG (xell/new GPU)",
-      "translation": "Intel FG (xell/新 GPU)"
+      "translation": "Intel FG（xell / 新 GPU）"
     },
     "ComboMfgOldNewGpu": {
       "source": "Combo MFG (old/new GPU)",
-      "translation": "Combo MFG(老/新GPU)"
+      "translation": "Combo MFG（旧/新 GPU）"
     },
     "NukemFgOldNewGpu": {
       "source": "Nukem FG (old/new GPU)",
-      "translation": "Nukem FG (旧/新) GPU)"
+      "translation": "Nukem FG（旧/新 GPU）"
     },
     "Fsr34FgOldNewGpu": {
       "source": "FSR3-4 FG (old/new GPU)",
-      "translation": "FSR3-4 FG(旧/新GPU)"
+      "translation": "FSR3-4 FG（旧/新 GPU）"
     },
     "NvidiaMfgRtxOnly": {
-      "source": "Nvidia MFG (RTX Only)",
-      "translation": "Nvidia MFG (RTX 仅(仅)"
+      "source": "NVIDIA MFG (RTX Only)",
+      "translation": "NVIDIA MFG（仅限 RTX）"
     },
     "FsrFgAntilag2Rdna234": {
       "source": "FSR FG (AntiLag2/rdna2.3.4)",
-      "translation": "法 瑞 地 FG (AntiLag2/rdna2.3.4"
+      "translation": "FSR FG（AntiLag2 / rdna2.3.4）"
     },
     "FsrFgLatencyFlexOldNewGpu": {
-      "source": "FSR FG (latency flex/old/new GPU)",
-      "translation": "法 瑞 地 FG (长(长/老/新) GPU)"
+      "source": "FSR FG (Latency Flex/old/new GPU)",
+      "translation": "FSR FG（Latency Flex / 旧/新 GPU）"
     },
     "OptiscalerMenu": {
       "source": "OptiScaler menu",
@@ -53,7 +53,7 @@
     },
     "FpsOverlay": {
       "source": "FPS overlay",
-      "translation": "FPS 重叠"
+      "translation": "FPS 悬浮窗"
     },
     "ShowHideIt": {
       "source": "Show / hide it",
@@ -61,11 +61,11 @@
     },
     "OverlayType": {
       "source": "Overlay type",
-      "translation": "重叠类型"
+      "translation": "悬浮窗类型"
     },
     "ChangeWhatItShows": {
       "source": "Change what it shows",
-      "translation": "改变它所显示的"
+      "translation": "更改显示内容"
     },
     "FrameGeneration": {
       "source": "Frame generation",
@@ -73,7 +73,7 @@
     },
     "TurnItOnOff": {
       "source": "Turn it on / off",
-      "translation": "打开/关上"
+      "translation": "开启/关闭"
     },
     "StopCapture": {
       "source": "Stop capture",
@@ -81,7 +81,7 @@
     },
     "CloseTheCaptureHost": {
       "source": "Close the capture host",
-      "translation": "关闭抓取主机"
+      "translation": "关闭采集端"
     },
     "ThisWindow": {
       "source": "This window",
@@ -89,7 +89,7 @@
     },
     "BringTheLauncherOnTop": {
       "source": "Bring the launcher on top",
-      "translation": "把发射装置上架"
+      "translation": "将启动器置顶"
     },
     "RivatunerRtssIsNotInstalled": {
       "source": "RivaTuner (RTSS) is not installed",
@@ -105,23 +105,23 @@
     },
     "LimiterOff": {
       "source": "Limiter off.",
-      "translation": "减速"
+      "translation": "限帧已关闭。"
     },
     "FrameLimiterIsOff": {
       "source": "Frame limiter is off.",
-      "translation": "框架限制关闭 。"
+      "translation": "限帧已关闭。"
     },
     "FrameLimiterIsOffLimitSetTo": {
       "source": "Frame limiter is off (limit set to 0).",
-      "translation": "框架限制已关闭( 限制为 0 ) 。"
+      "translation": "限帧已关闭（帧率上限为 0）。"
     },
     "RtssDidNotTakeTheChange": {
       "source": "RTSS did not take the change.",
-      "translation": "RTSS没有接受这一更改。"
+      "translation": "RTSS 未能应用更改。"
     },
     "PickAGameInTheListFirst": {
       "source": "Pick a game in the list first (the limiter is set for its .exe).",
-      "translation": "首先在列表中选择一个游戏( 限值为 .exe ) 。"
+      "translation": "请先从列表中选择游戏；限帧设置会应用到该游戏的 .exe。"
     },
     "Async": {
       "source": "async",
@@ -141,27 +141,27 @@
     },
     "RtssDidNotAcceptTheChange": {
       "source": "RTSS did not accept the change.",
-      "translation": "RTSS不接受这一更改。"
+      "translation": "RTSS 未接受更改。"
     },
     "RtssDidNotTakeTheLimit": {
       "source": "RTSS did not take the limit.",
-      "translation": "RTSS没有遵守限额。"
+      "translation": "RTSS 未能应用限帧设置。"
     },
     "AdministratorPermissionWasNotGiven": {
       "source": "Administrator permission was not given.",
-      "translation": "署长没有给予许可。"
+      "translation": "未授予管理员权限。"
     },
     "RtssNeedsAdministratorRightsToTakeThe": {
       "source": "RTSS needs administrator rights to take the limit. Press Apply again and allow it.",
-      "translation": "RTSS 需要管理员权限才能使用限制。 按下应用并允许使用 。"
+      "translation": "RTSS 需要管理员权限才能应用限帧设置。请再次点击“应用”并授权。"
     },
     "RtssDidNotTakeTheLimitIs": {
       "source": "RTSS did not take the limit. Is RTSS running?",
-      "translation": "RTSS 并没有遵守限制。 RTSS 跑步吗?"
+      "translation": "RTSS 未能应用限帧设置。RTSS 正在运行吗？"
     },
     "NoFgMod": {
       "source": "NO FG MOD",
-      "translation": "不使用 FG 模组"
+      "translation": "关闭 FG 模组"
     },
     "X2FgModNewGpu": {
       "source": "x2 FG MOD (NEW GPU)",
@@ -173,19 +173,19 @@
     },
     "X4FgModNewGpu": {
       "source": "x4 FG MOD (NEW GPU)",
-      "translation": "x4x4 FG 部 (部) GPU)"
+      "translation": "x4 FG 模组（新 GPU）"
     },
     "X2FgModOldGpu": {
       "source": "x2 FG MOD (OLD GPU)",
-      "translation": "x2x2 FG 部 (OLD) GPU)"
+      "translation": "x2 FG 模组（旧 GPU）"
     },
     "X3FgModOldGpu": {
       "source": "x3 FG MOD (OLD GPU)",
-      "translation": "x3 个 FG 部 (OLD) GPU)"
+      "translation": "x3 FG 模组（旧 GPU）"
     },
     "X4FgModOldGpu": {
       "source": "x4 FG MOD (OLD GPU)",
-      "translation": "x4x4 FG 部 (OLD) GPU)"
+      "translation": "x4 FG 模组（旧 GPU）"
     },
     "OptiscalerIniWasNotFoundNextTo": {
       "source": "OptiScaler.ini was not found next to the launcher.",
@@ -205,7 +205,7 @@
     },
     "ThatWindowIsGonePickTheGame": {
       "source": "That window is gone. Pick the game again.",
-      "translation": "窗户没了,再选一次"
+      "translation": "该窗口已关闭，请重新选择游戏。"
     },
     "OpticapturehostExeWasNotFoundNextTo": {
       "source": "OptiCaptureHost.exe was not found next to the launcher.",
@@ -213,11 +213,11 @@
     },
     "CaptureEnded": {
       "source": "Capture ended.",
-      "translation": "捕获结束 。"
+      "translation": "捕获已结束。"
     },
     "RtssNeedsAdministratorRightsToWriteThe": {
       "source": "RTSS needs administrator rights to write the limit - allow the Windows prompt.",
-      "translation": "RTSS 需要管理员权限来写入限制 - 允许 Windows 提示 。"
+      "translation": "RTSS 需要管理员权限才能写入限帧设置，请在 Windows 提示中授权。"
     },
     "PickAGameInTheListFirst2": {
       "source": "Pick a game in the list first.",
@@ -225,35 +225,35 @@
     },
     "ThatWindowIsGonePressRefresh": {
       "source": "That window is gone. Press Refresh.",
-      "translation": "窗口已关闭, 按刷新 。"
+      "translation": "该窗口已关闭，请点击“刷新”。"
     },
     "TheGameWindowNeedsAdministratorRightsAllow": {
       "source": "The game window needs administrator rights - allow the Windows prompt.",
-      "translation": "游戏窗口需要管理员权限 - 允许 Windows 提示 。"
+      "translation": "游戏窗口需要管理员权限，请在 Windows 提示中授权。"
     },
     "CouldNotBringTheWindowFrameBack": {
       "source": "Could not bring the window frame back.",
-      "translation": "无法将窗口框架带回 。"
+      "translation": "无法恢复窗口边框。"
     },
     "BorderlessIsOffTheWindowFrameIs": {
       "source": "Borderless is off: the window frame is back.",
-      "translation": "无边界线关闭:窗口框架已返回。"
+      "translation": "无边框模式已关闭，窗口边框已恢复。"
     },
     "WindowsDidNotLetTheLauncherChange": {
       "source": "Windows did not let the launcher change that window.",
-      "translation": "视窗没有让发射器更改该窗口 。"
+      "translation": "Windows 不允许启动器修改该窗口。"
     },
     "BorderlessIsOnPressTheButtonAgain": {
       "source": "Borderless is on. Press the button again to bring the frame back.",
-      "translation": "无国界的开始,再次按下按钮,把框架带回来"
+      "translation": "无边框模式已开启。再次点击按钮可恢复窗口边框。"
     },
     "LimiterPutBackAfterTheCapture": {
       "source": "Limiter put back after the capture.",
-      "translation": "捕捉后 限制放回了"
+      "translation": "捕获结束后已恢复限帧设置。"
     },
     "PickAGameFirst": {
       "source": "Pick a game first.",
-      "translation": "先挑个游戏"
+      "translation": "请先选择游戏。"
     },
     "Off": {
       "source": "Off",
@@ -277,11 +277,11 @@
     },
     "ThisWindowHasNoProgramNameSo": {
       "source": "This window has no program name, so a profile cannot be saved for it.",
-      "translation": "此窗口没有程序名称, 因此无法保存配置文件 。"
+      "translation": "此窗口没有程序名称，无法为其保存配置。"
     },
     "CouldNotSaveTheProfileCheckThe": {
       "source": "Could not save the profile. Check the folder permissions.",
-      "translation": "无法保存配置文件。 请检查文件夹权限 。"
+      "translation": "无法保存配置。请检查文件夹权限。"
     },
     "LiveStatus": {
       "source": "Live status",
@@ -289,7 +289,7 @@
     },
     "LiveStatusWaitingForTheHost": {
       "source": "Live status – waiting for the host…",
-      "translation": "等待主机的现场状态..."
+      "translation": "实时状态：等待采集端……"
     },
     "Auto": {
       "source": "Auto",
@@ -297,11 +297,11 @@
     },
     "On0": {
       "source": "On · 0",
-      "translation": "上 0.0"
+      "translation": "开启 · 0"
     },
     "On1": {
       "source": "On · 1",
-      "translation": "关 ・ 1"
+      "translation": "开启 · 1"
     },
     "Game": {
       "source": "Game",
@@ -309,7 +309,7 @@
     },
     "Overlay": {
       "source": "Overlay",
-      "translation": "叠加层"
+      "translation": "悬浮窗"
     },
     "OtherWindow": {
       "source": "Other window",
@@ -317,7 +317,7 @@
     },
     "DisplayRefresh": {
       "source": "Display refresh",
-      "translation": "显示刷新"
+      "translation": "显示器刷新率"
     },
     "SyncInterval": {
       "source": "Sync interval",
@@ -329,19 +329,19 @@
     },
     "GameLooksCapped": {
       "source": "Game looks capped",
-      "translation": "游戏看起来封套"
+      "translation": "游戏疑似被限帧"
     },
     "PresentIsWaiting": {
       "source": "Present is waiting",
-      "translation": "呈现等待中"
+      "translation": "等待呈现"
     },
     "AlwaysApplySavedProfilesAutomatically": {
       "source": "Always apply saved profiles automatically",
-      "translation": "总是自动自动应用已保存的配置文件"
+      "translation": "始终自动应用已保存的配置"
     },
     "DonTShowThisWarningAgain": {
       "source": "Don't show this warning again",
-      "translation": "别再警告我"
+      "translation": "不再显示此警告"
     },
     "No": {
       "source": "No",
@@ -357,7 +357,7 @@
     },
     "StartAnyway": {
       "source": "Start anyway",
-      "translation": "不论从哪开始"
+      "translation": "仍然启动"
     },
     "HoldCtrlShiftOrAltTogetherWith": {
       "source": "Hold Ctrl, Shift or Alt together with the key (so it does not clash with the game).",
@@ -369,7 +369,7 @@
     },
     "CouldNotReadTheGameSExecutable": {
       "source": "Could not read the game's executable path (protected process).",
-      "translation": "无法读取游戏的可执行路径( 受保护进程) 。"
+      "translation": "无法读取游戏的可执行文件路径（游戏进程受保护）。"
     },
     "InvalidGameExecutablePath": {
       "source": "Invalid game executable path.",
@@ -381,11 +381,11 @@
     },
     "HiddenWarningsWillBeShownAgain": {
       "source": "Hidden warnings will be shown again.",
-      "translation": "隐藏警告将会再次显示 。"
+      "translation": "已重新启用警告提示。"
     },
     "AutoDefaultNothingForced": {
       "source": "Auto  (default, nothing forced)",
-      "translation": "自动( 默认, 没有强制)"
+      "translation": "自动（默认，不强制指定）"
     },
     "OnForcevsyncTrueSyncinterval0": {
       "source": "On  (ForceVsync = true, SyncInterval = 0)",
@@ -401,11 +401,11 @@
     },
     "StopTheHostFirstThenReset": {
       "source": "Stop the host first, then reset.",
-      "translation": "先停止主机, 然后重置 。"
+      "translation": "请先停止采集端，再重置设置。"
     },
     "ResetAllSettingsToTheirDefaultsFrame": {
       "source": "Reset ALL settings to their defaults?\n(frame generation, limiter, output scaling, present mode, shortcuts...)",
-      "translation": "是否将全部设置重置为默认?\n(框架生成、限制、输出缩放、当前模式、快捷键...)"
+      "translation": "将所有设置恢复为默认值？\n（帧生成、限帧、输出缩放、呈现模式、快捷键……）"
     },
     "ResetToDefault": {
       "source": "Reset to default",
@@ -413,39 +413,39 @@
     },
     "AllSettingsResetToDefault": {
       "source": "All settings reset to default.",
-      "translation": "所有设置重置为默认 。"
+      "translation": "所有设置已恢复为默认值。"
     },
     "InvalidFrameGenerationSelection": {
       "source": "Invalid Frame Generation selection.",
-      "translation": "无效的框架生成选择 。"
+      "translation": "无效的帧生成选项。"
     },
     "AutoFgOnNoWaitFgOff": {
       "source": "Auto  (FG on: no wait, FG off: VSync)",
-      "translation": "自动( 自动)FG .. 不许等待, FG 关闭 : VSync)"
+      "translation": "自动（FG 开启：不等待；FG 关闭：VSync）"
     },
     "AlwaysNoWaitInterval0": {
       "source": "Always no wait  (interval 0)",
-      "translation": "总是不等待( 间隔 0)"
+      "translation": "始终不等待（间隔 0）"
     },
     "AlwaysWaitForVblankInterval1": {
       "source": "Always wait for vblank  (interval 1)",
-      "translation": "总是等待 vblank (interval 1)"
+      "translation": "始终等待 vblank（间隔 1）"
     },
     "ClassicBehavesLikeVersion220": {
       "source": "Classic  (behaves like version 2.2.0)",
-      "translation": "经典(如2.2.0版)"
+      "translation": "经典模式（与 2.2.0 版本行为一致）"
     },
     "LosslessStyleLowLatencyTearingAllowed": {
       "source": "Lossless-style  (low latency, tearing allowed)",
-      "translation": "无损风格( 低时空, 允许撕裂)"
+      "translation": "无损模式（低延迟，允许画面撕裂）"
     },
     "ClassicHalfRefreshExactlyRefresh2Frames": {
       "source": "Classic + half refresh  (exactly refresh / 2 frames)",
-      "translation": "经典+半刷新(精确刷新/ 2框架)"
+      "translation": "经典模式 + 半刷新率（帧率为刷新率的一半）"
     },
     "ClassicUnlimitedSameNoHalfRefreshLimit": {
       "source": "Classic + unlimited  (same, no half-refresh limit)",
-      "translation": "经典+无限制(相同,无半更新限制)"
+      "translation": "经典模式 + 不限帧"
     },
     "Off2": {
       "source": "  (off)",
@@ -453,19 +453,19 @@
     },
     "GameTheSelectedGameSExe": {
       "source": "Game  (the selected game's .exe)",
-      "translation": "游戏( 选中的游戏 .exe)"
+      "translation": "游戏（所选游戏的 .exe）"
     },
     "HostOpticapturehostExe": {
       "source": "Host  (OptiCaptureHost.exe)",
-      "translation": "东道主(OptiCaptureHost.exe)"
+      "translation": "采集端（OptiCaptureHost.exe）"
     },
     "GlobalEveryProgram": {
       "source": "Global  (every program)",
-      "translation": "全球(每个方案)"
+      "translation": "全局（所有程序）"
     },
     "PressApplyToUseTheLimiterSetting": {
       "source": "Press Apply to use the limiter setting.",
-      "translation": "按 应用 键以使用限制设置 。"
+      "translation": "点击“应用”以启用限帧设置。"
     },
     "Async2": {
       "source": "Async",
@@ -473,7 +473,7 @@
     },
     "FrontEdgeSyncDefault": {
       "source": "Front edge sync  (default)",
-      "translation": "前边缘同步( 默认)"
+      "translation": "前沿同步（默认）"
     },
     "BackEdgeSync2": {
       "source": "Back edge sync",
@@ -481,27 +481,27 @@
     },
     "RefreshRateAuto": {
       "source": "Refresh rate  (auto)",
-      "translation": "更新率(auto)"
+      "translation": "刷新率（自动）"
     },
     "Text12RefreshRateAuto": {
       "source": "1/2 refresh rate  (auto)",
-      "translation": "1/2 复习率(auto)"
+      "translation": "1/2 刷新率（自动）"
     },
     "Text13RefreshRateAuto": {
       "source": "1/3 refresh rate  (auto)",
-      "translation": "1/3 复习率(auto)"
+      "translation": "1/3 刷新率（自动）"
     },
     "Text14RefreshRateAuto": {
       "source": "1/4 refresh rate  (auto)",
-      "translation": "1/4 复习率(auto)"
+      "translation": "1/4 刷新率（自动）"
     },
     "DepthReshadeOutputScalingAutomaticallySetTo": {
       "source": "Depth: ReShade. Output scaling automatically set to DLSS · Quality.",
-      "translation": "深度 : ReShade自动设定输出缩放为 DLSS 质量。"
+      "translation": "深度模式已切换为 ReShade，输出缩放自动设为 DLSS 画质档。"
     },
     "DepthFlatAsAlwaysOutputScalingSet": {
       "source": "Depth: Flat, as always. Output scaling set to Off.",
-      "translation": "深度: 平坦, 一如既往。 输出缩放设置为关闭 。"
+      "translation": "深度模式：仍使用平面深度，输出缩放已关闭。"
     },
     "Dlss5EnabledDlssnrEnabledTrue": {
       "source": "DLSS 5 enabled ([DlssNr] Enabled = true).",
@@ -529,27 +529,27 @@
     },
     "TheDownloadLinkForNvngxDlssnrDll": {
       "source": "The download link for nvngx_dlssnr.dll is not set yet.",
-      "translation": "nvngx_dlssnr.dll 的下载链接尚未设定 。"
+      "translation": "尚未设置 nvngx_dlssnr.dll 的下载链接。"
     },
     "OptiscalerSFrameLimitWillBeSet": {
       "source": "OptiScaler's frame limit will be set to the monitor's refresh rate every time the game starts.",
-      "translation": "OptiScaler 框架限制将设定为每次游戏开始时显示器的更新速度 。"
+      "translation": "每次启动游戏时，都会将 OptiScaler 的帧率上限设为显示器刷新率。"
     },
     "OptiscalerSFrameLimitWasSetTo": {
       "source": "OptiScaler's frame limit was set to 0 (no limit) in OptiScaler.ini.",
-      "translation": "OptiScaler的框架限制在OptiScaler.ini年为0(无限制)。"
+      "translation": "OptiScaler.ini 中的 OptiScaler 帧率上限已设为 0（不限帧）。"
     },
     "TheLimiterWillBeAppliedEveryTime": {
       "source": "The limiter will be applied every time you press START.",
-      "translation": "每次按下 START，都会应用帧率限制。"
+      "translation": "每次点击“启动”都会应用限帧设置。"
     },
     "TheLimiterIsAppliedOnlyWithThe": {
       "source": "The limiter is applied only with the Apply button.",
-      "translation": "只能通过“应用”按钮启用帧率限制。"
+      "translation": "仅在点击“应用”时更新限帧设置。"
     },
     "MultiFrameGenerationCountIsForIntel": {
-      "source": "Multi frame generation count is for Intel MFG, Artur, Combo and Nvidia MFG.",
-      "translation": "多框架生成计数 Intel MFG, Artur、 Combo 和 Nvidia MFG."
+      "source": "Multi frame generation count is for Intel MFG, Artur, Combo and NVIDIA MFG.",
+      "translation": "多帧生成倍率适用于 Intel MFG、Artur、Combo 和 NVIDIA MFG。"
     },
     "StopTheCaptureFirstThenPickA": {
       "source": "Stop the capture first, then pick a mode.",
@@ -557,79 +557,79 @@
     },
     "SavedGameProfilesWillBeAppliedAutomatically": {
       "source": "Saved game profiles will be applied automatically when you pick the game.",
-      "translation": "选择游戏时, 保存的游戏配置文件会自动应用 。"
+      "translation": "选择游戏后会自动应用该游戏的配置。"
     },
     "YouWillBeAskedBeforeASaved": {
       "source": "You will be asked before a saved game profile is applied.",
-      "translation": "在应用保存的游戏配置文件之前, 您会被询问 。"
+      "translation": "应用已保存的游戏配置前会先询问。"
     },
     "UpscalerOnThePictureIsOnSharpness": {
       "source": "Upscaler on the picture is on (sharpness 0.6, CAS, native upscaler pass). Restart the game to use the change.",
-      "translation": "图片上显示的升级( 速率为 0 6, CAS, 本地升降器过关) 。 重新启动游戏以使用更改 。"
+      "translation": "已启用画面超分（锐度 0.6、CAS、原生超分处理）。重启游戏后生效。"
     },
     "UpscalerOnThePictureIsOffRestart": {
       "source": "Upscaler on the picture is off. Restart the game to use the change.",
-      "translation": "图片上显示的升级器关闭。 重新启动游戏以使用更改 。"
+      "translation": "已关闭画面超分。重启游戏后生效。"
     },
     "BorderlessCannotBeUsedWhileOutputScaling": {
       "source": "Borderless cannot be used while Output scaling is on.\nTurn Output scaling off first, then press Borderless.",
-      "translation": "输出缩放正在进行, 无法使用无边界 。\n将输出减缩先关闭,"
+      "translation": "启用输出缩放时无法使用无边框模式。\n请先关闭输出缩放，再点击“无边框”。"
     },
     "OutputScalingIsOn": {
       "source": "Output scaling is on",
-      "translation": "正在展开产出缩放"
+      "translation": "已启用输出缩放"
     },
     "Quality15x": {
       "source": "Quality  (1.5x",
-      "translation": "质量(1.5x)"
+      "translation": "画质档（1.5x"
     },
     "Balanced17x": {
       "source": "Balanced  (1.7x",
-      "translation": "余额(1.7x)"
+      "translation": "均衡档（1.7x"
     },
     "Performance2x": {
       "source": "Performance  (2x",
-      "translation": "业绩(2x)"
+      "translation": "性能档（2x"
     },
     "Native1x": {
       "source": "Native  (1x",
-      "translation": "原生(1x)"
+      "translation": "原生（1x"
     },
     "OutputScalingIsOff": {
       "source": "Output scaling is off.",
-      "translation": "产出缩放正在下降。"
+      "translation": "已关闭输出缩放。"
     },
     "NativeTheGameKeepsItsSizeAnd": {
       "source": "Native: the game keeps its size and FSR only smooths the picture. \"Run the upscaler on the picture\" was turned on too.",
-      "translation": "原版:游戏保持其大小, FSR 只能平滑图片。 “ 运行图像上升” 也打开了 。"
+      "translation": "原生模式下，游戏保持原分辨率，FSR 仅用于平滑画面。已同时开启“启用画面超分”。"
     },
     "StartMakesTheGameWindowThatSmall": {
       "source": "START makes the game window that small and scales it up. \"Run the upscaler on the picture\" was turned on too.",
-      "translation": "裁剪使游戏窗口小到可以缩放。 “ 运行图像上升器” 也打开了 。"
+      "translation": "点击“启动”会将游戏窗口缩至所选尺寸，再把画面放大。已同时开启“启用画面超分”。"
     },
     "OffWeakGpus": {
       "source": "Off  (weak GPUs)",
-      "translation": "关闭 (GPUs)"
+      "translation": "关闭（低性能 GPU）"
     },
     "LightCpuPriorityOnly": {
       "source": "Light  (CPU priority only)",
-      "translation": "光(仅优先CPU)"
+      "translation": "轻量（仅提高 CPU 优先级）"
     },
     "BalancedCpuGpuHigh": {
       "source": "Balanced  (CPU + GPU high)",
-      "translation": "余额(CPU + GPU 高)"
+      "translation": "均衡（CPU、GPU 高优先级）"
     },
     "MaxBestForStrongGpus": {
       "source": "Max  (best for strong GPUs)",
-      "translation": "最大(最大为强GPUs)"
+      "translation": "最高（推荐高性能 GPU）"
     },
     "Dlss37AmdAndGtx16": {
       "source": "DLSS 3.7  (AMD and GTX 16 cards)",
-      "translation": "DLSS 3.7  (AMD 和 GTX 16张卡)"
+      "translation": "DLSS 3.7（AMD 和 GTX 16 系列显卡）"
     },
     "InvalidUpscalerSelection": {
       "source": "Invalid Upscaler selection.",
-      "translation": "无效的升级选择 。"
+      "translation": "无效的超分方案。"
     },
     "OptiscalerIniUpdatedRestartTheGameTo": {
       "source": "OptiScaler.ini updated. Restart the game to use the change.",
@@ -641,19 +641,19 @@
     },
     "ForTheHostSOwnOutputScaling": {
       "source": "For the host's own output scaling (FSR 3 / 4, DLSS).",
-      "translation": "东道主自己的产出规模(FSR 3/4, DLSS)。"
+      "translation": "用于采集端自身的输出缩放（FSR 3 / 4、DLSS）。"
     },
     "FlatDefault": {
       "source": "Flat  (default)",
-      "translation": "平平( 默认)"
+      "translation": "平面深度（默认）"
     },
     "AsAlwaysNothingChangesWorksInEvery": {
       "source": "As always: nothing changes. Works in every game.",
-      "translation": "一如既往:没有什么改变,每一场比赛都有效"
+      "translation": "无需改动，所有游戏都能使用。"
     },
     "TheGameSRealDepthBufferFound": {
       "source": "The game's real depth buffer, found by ReShade and shared by an add-on.",
-      "translation": "比赛真正的深度缓冲 由ReShade号发现 并被一个附加部分共享"
+      "translation": "ReShade 通过 Add-on 获取并共享游戏的真实深度缓冲区。"
     },
     "NotUsed": {
       "source": "Not used",
@@ -661,7 +661,7 @@
     },
     "TheFlatDepthIsUsedAsBefore": {
       "source": "The flat depth is used, as before.",
-      "translation": "平面深度与以前一样使用。"
+      "translation": "与之前一样，使用平面深度。"
     },
     "WaitingForStart": {
       "source": "Waiting for START",
@@ -693,7 +693,7 @@
     },
     "NoNewPictures": {
       "source": "No new pictures",
-      "translation": "无新图片"
+      "translation": "暂无新帧"
     },
     "TickOpticapturedepthOnInReshadeSMenu": {
       "source": "Tick OptiCaptureDepth on in ReShade's menu.",
@@ -701,11 +701,11 @@
     },
     "WaitingForTheAddOn": {
       "source": "Waiting for the add-on",
-      "translation": "等待附加"
+      "translation": "等待 ReShade 加载 Add-on"
     },
     "IsReshadeWithOpticapturedepthAddon64RunningIn": {
       "source": "Is ReShade with OptiCaptureDepth.addon64 running in the game?",
-      "translation": "ReShade和OptiCaptureDepth.addon64在比赛中吗?"
+      "translation": "游戏中是否正在运行带有 OptiCaptureDepth.addon64 的 ReShade？"
     },
     "Waiting": {
       "source": "Waiting",
@@ -713,7 +713,7 @@
     },
     "OutputScalingMustBeFsr34": {
       "source": "Output scaling must be FSR 3/4 or DLSS (not Off or NIS).",
-      "translation": "产出规模必须 FSR 3/4 或 DLSS (非关闭或 NIS)."
+      "translation": "输出缩放必须设为 FSR 3/4 或 DLSS，不能设为关闭或 NIS。"
     },
     "HowToUse": {
       "source": "How to use",
@@ -729,11 +729,11 @@
     },
     "OpenReshadeDepthFolder": {
       "source": "Open \"ReShade depth\" folder",
-      "translation": "打开“ ReShade 深度” 文件夹"
+      "translation": "打开“ReShade depth”文件夹"
     },
     "OptionalNeedsNvngxDlssnrDll": {
       "source": "Optional  ·  needs nvngx_dlssnr.dll",
-      "translation": "供选需求 nvngx_dlssnr.dll"
+      "translation": "可选 · 需要 nvngx_dlssnr.dll"
     },
     "EnableDlss5": {
       "source": "Enable DLSS 5",
@@ -749,7 +749,7 @@
     },
     "RequiredFile": {
       "source": "Required file",
-      "translation": "所需文件"
+      "translation": "必需文件"
     },
     "FoundNextToTheProgram": {
       "source": "✓  Found next to the program",
@@ -761,7 +761,7 @@
     },
     "Dlss5WillNotWorkWithoutIt": {
       "source": "DLSS 5 will not work without it.",
-      "translation": "没有它,DLSS 5号不会工作。"
+      "translation": "缺少该文件时 DLSS 5 无法运行。"
     },
     "DownloadNvngxDlssnrDll": {
       "source": "Download nvngx_dlssnr.dll",
@@ -769,11 +769,11 @@
     },
     "DownloadItAndPlaceItExactlyNext": {
       "source": "Download it and place it exactly next to the program.",
-      "translation": "下载并把它完全放在程序旁边"
+      "translation": "下载后将文件放在程序所在目录。"
     },
     "Dlss5NeedsVersion310916": {
       "source": "DLSS 5 needs version 310.9.16.",
-      "translation": "DLSS 5需要版本310.9.16。"
+      "translation": "DLSS 5 需要 310.9.16 版本。"
     },
     "Dlss5Settings": {
       "source": "DLSS 5 settings",
@@ -781,23 +781,23 @@
     },
     "InTheGameOpenTheOptiscalerMenu": {
       "source": "In the game, open the OptiScaler menu and go to the Neural Rendering section to change the settings you want.",
-      "translation": "在游戏中, 打开 OptiScaler 菜单, 然后转到神经调整部分, 以更改您想要的设置 。"
+      "translation": "进入游戏后，打开 OptiScaler 菜单，再进入 Neural Rendering 页面调整设置。"
     },
     "PressKeys": {
       "source": "Press keys…",
-      "translation": "按键..."
+      "translation": "请按下按键……"
     },
     "CaptureAnyGameFsr4AndXess": {
       "source": "Capture any game · FSR 4 and XeSS multi frame generation through OptiScaler",
-      "translation": "捕捉任何游戏 / FSR 4 和 XeSS 生成多框架 OptiScaler"
+      "translation": "捕获任意游戏 · 通过 OptiScaler 使用 FSR 4 和 XeSS 多帧生成"
     },
     "Depth2": {
       "source": "Depth  ‹",
-      "translation": "深度,"
+      "translation": "深度  ‹"
     },
     "Depth3": {
       "source": "Depth  ›",
-      "translation": "深度,"
+      "translation": "深度  ›"
     },
     "StoppingCapture": {
       "source": "Stopping",
@@ -805,7 +805,7 @@
     },
     "Capturing": {
       "source": "Capturing",
-      "translation": "获取"
+      "translation": "捕获中"
     },
     "CaptureReady": {
       "source": "Ready",
@@ -813,27 +813,27 @@
     },
     "X2FgNewGpu": {
       "source": "x2 FG · NEW GPU",
-      "translation": "x2x2 FG 新的 GPU"
+      "translation": "x2 FG · 新 GPU"
     },
     "X3FgNewGpu": {
       "source": "x3 FG · NEW GPU",
-      "translation": "x3 个 FG 新的 GPU"
+      "translation": "x3 FG · 新 GPU"
     },
     "X4FgNewGpu": {
       "source": "x4 FG · NEW GPU",
-      "translation": "4 FG GPU新 812 300518新"
+      "translation": "x4 FG · 新 GPU"
     },
     "X2FgOldGpu": {
       "source": "x2 FG · OLD GPU",
-      "translation": "x2x2 FG 旧旧 GPU"
+      "translation": "x2 FG · 旧 GPU"
     },
     "X3FgOldGpu": {
       "source": "x3 FG · OLD GPU",
-      "translation": "x3 个 FG 旧旧 GPU"
+      "translation": "x3 FG · 旧 GPU"
     },
     "X4FgOldGpu": {
       "source": "x4 FG · OLD GPU",
-      "translation": "x4x4 FG 旧旧 GPU"
+      "translation": "x4 FG · 旧 GPU"
     },
     "ChooseAGame": {
       "source": "Choose a game",
@@ -841,15 +841,15 @@
     },
     "PickTheWindowOfTheGameYou": {
       "source": "Pick the window of the game you want to enhance",
-      "translation": "选择您想要增强的游戏窗口"
+      "translation": "选择要增强的游戏窗口"
     },
     "BorderlessOn": {
       "source": "Borderless: On",
-      "translation": "无边界: 于"
+      "translation": "无边框：开启"
     },
     "BorderlessOff": {
       "source": "Borderless: Off",
-      "translation": "无边界:关闭"
+      "translation": "无边框：关闭"
     },
     "Refresh": {
       "source": "Refresh",
@@ -869,15 +869,15 @@
     },
     "NoWindowsFoundStartTheGameThen": {
       "source": "No windows found. Start the game, then press Refresh.",
-      "translation": "未找到窗口。 开始游戏, 然后按刷新 。"
+      "translation": "未找到游戏窗口。启动游戏后点击“刷新”。"
     },
     "LightCpuPriority": {
       "source": "Light  (CPU priority)",
-      "translation": "轻型(CPU优先)"
+      "translation": "轻量（提高 CPU 优先级）"
     },
     "MaxStrongGpus": {
       "source": "Max  (strong GPUs)",
-      "translation": "最大(强GPUs)"
+      "translation": "最高（适合高性能 GPU）"
     },
     "ClassicLike220": {
       "source": "Classic  (like 2.2.0)",
@@ -885,15 +885,15 @@
     },
     "LosslessStyleLowLatency": {
       "source": "Lossless-style  (low latency)",
-      "translation": "无损失风格( 低时间)"
+      "translation": "无损模式（低延迟）"
     },
     "ClassicHalfRefresh": {
       "source": "Classic + half refresh",
-      "translation": "古典+半刷新"
+      "translation": "经典模式 + 半刷新率"
     },
     "ClassicUnlimited": {
       "source": "Classic + unlimited",
-      "translation": "经典+无限制"
+      "translation": "经典模式 + 不限帧"
     },
     "PresentMode": {
       "source": "Present mode",
@@ -925,7 +925,7 @@
     },
     "Bilinear": {
       "source": "Bilinear  ·  ",
-      "translation": "双线 / / 双线/ /  "
+      "translation": "双线性  ·  "
     },
     "Resize": {
       "source": "Resize",
@@ -957,7 +957,7 @@
     },
     "Host": {
       "source": "Host",
-      "translation": "捕获端"
+      "translation": "采集端"
     },
     "FrontEdgeSync2": {
       "source": "Front edge sync",
@@ -965,23 +965,23 @@
     },
     "FrameLimiterRivatuner": {
       "source": "Frame limiter  ·  RivaTuner",
-      "translation": "框架限制 0. RivaTuner"
+      "translation": "限帧 · RivaTuner"
     },
     "Lock": {
       "source": "Lock:  ",
-      "translation": "锁定 :  "
+      "translation": "锁定：  "
     },
     "Text12RefreshAuto": {
       "source": "1/2 refresh  (auto)",
-      "translation": "1/2 刷新 (auto)"
+      "translation": "1/2 刷新率（自动）"
     },
     "Text13RefreshAuto": {
       "source": "1/3 refresh  (auto)",
-      "translation": "1/3 新鲜(auto)"
+      "translation": "1/3 刷新率（自动）"
     },
     "Text14RefreshAuto": {
       "source": "1/4 refresh  (auto)",
-      "translation": "1/4 刷新(auto)"
+      "translation": "1/4 刷新率（自动）"
     },
     "ApplyOnStart": {
       "source": "Apply on START",
@@ -1025,11 +1025,11 @@
     },
     "OptiUpscaler": {
       "source": "Opti Upscaler",
-      "translation": "Opti 升频器"
+      "translation": "Opti 超分"
     },
     "RunTheUpscalerOnThePicture": {
       "source": "Run the upscaler on the picture",
-      "translation": "在画面上运行升频器"
+      "translation": "启用画面超分"
     },
     "Enable": {
       "source": "Enable",
@@ -1045,11 +1045,11 @@
     },
     "FocusOverlayOpenOptiscalerMenu": {
       "source": "Focus overlay, open OptiScaler menu",
-      "translation": "焦点重叠,打开 OptiScaler 菜单"
+      "translation": "聚焦悬浮窗，打开 OptiScaler 菜单"
     },
     "MouseKeyboardGameOverlay": {
       "source": "Mouse + keyboard: game / overlay",
-      "translation": "鼠鼠+键盘:游戏/重叠"
+      "translation": "鼠标 + 键盘：游戏 / 悬浮窗"
     },
     "Developer": {
       "source": "Developer",
@@ -1073,7 +1073,7 @@
     },
     "StoppingCapture2": {
       "source": "STOPPING…",
-      "translation": "停止... 停止..."
+      "translation": "停止中…"
     },
     "StopCapture2": {
       "source": "STOP",
@@ -1085,15 +1085,15 @@
     },
     "CouldNotStartGdi": {
       "source": "Could not start GDI+.",
-      "translation": "无法启动 GDI+ 。"
+      "translation": "无法启动 GDI+。"
     },
     "CouldNotCreateTheWindow": {
       "source": "Could not create the window.",
-      "translation": "无法创建窗口 。"
+      "translation": "无法创建窗口。"
     },
     "PresetApplied": {
       "source": "{0}: limiter, present mode and frame generation set.",
-      "translation": "{0}:限制、目前模式和框架生成成套装置。"
+      "translation": "已应用预设 {0}：限帧、呈现模式和帧生成设置已更新。"
     },
     "HostStartFailed": {
       "source": "Could not start OptiCaptureHost.exe (error {0}).",
@@ -1101,91 +1101,91 @@
     },
     "HostStopped": {
       "source": "The capture host stopped (code {0}). See OptiCaptureHost.log.",
-      "translation": "抓捕主机已停止( 代码) {0}见 OptiCaptureHost.log."
+      "translation": "采集端已停止（错误码 {0}）。请查看 OptiCaptureHost.log。"
     },
     "GameResolutionRestored": {
       "source": "The game changed its resolution ({0}): the window was set back to {1}.",
-      "translation": "游戏改变了它的分辨率( ){0}:窗口被放回 {1}."
+      "translation": "游戏分辨率已变更为 {0}，窗口已恢复为 {1}。"
     },
     "GameResolutionScaled": {
       "source": "Game window is now {0} ({1}). The host scales it to {2}.",
-      "translation": "游戏窗口现在为 {0} ({1}东道主的比重是 {2}."
+      "translation": "游戏窗口当前为 {0}（{1}），采集端会将画面缩放至 {2}。"
     },
     "GameResolutionAdjusted": {
       "source": "Window is now {0} (wanted {1}). Set the game's own resolution if it differs.",
-      "translation": "窗口现在是现在 {0} (待 补) {1}) 如果游戏的分辨率不同,请设定游戏的分辨率。"
+      "translation": "当前窗口分辨率为 {0}（预期为 {1}）。如不一致，请调整游戏内分辨率。"
     },
     "ProfileSaved": {
       "source": "Profile {0} saved for {1} ({2}).",
-      "translation": "已为 {1} 保存配置文件 {0}（{2}）。"
+      "translation": "已为 {1} 保存配置 {0}（{2}）。"
     },
     "EmptyProfile": {
       "source": "Profile {0} of {1} is empty. Press Save to store the current settings in it.",
-      "translation": "配置文件 {0}（{1}）为空。按“保存”将当前设置保存到此配置文件中。"
+      "translation": "{1} 的配置 {0} 为空。点击“保存”以存入当前设置。"
     },
     "ProfileApplyFailed": {
       "source": "Could not apply the saved profile of {0}. Check the file and permissions.",
-      "translation": "无法应用 {0} 的保存配置文件。 请检查文件和权限 。"
+      "translation": "无法应用 {0} 的配置。请检查文件和访问权限。"
     },
     "ProfileApplied": {
       "source": "Profile {0} of {1} applied (OptiScaler.ini replaced).",
-      "translation": "已应用配置文件 {0}（{1}）（已替换 OptiScaler.ini）。"
+      "translation": "已应用 {1} 的配置 {0}，并替换 OptiScaler.ini。"
     },
     "ConfirmProfileApply": {
       "source": "You saved settings (profile {0}) for {1} earlier.\n\nDo you want to apply them now? This replaces the OptiScaler.ini next to the launcher with the one saved for this game.",
-      "translation": "您保存了设置( 配置) {0}) 的 月 月 年 月 日 {1} 之前说。\n\n您现在要应用吗? 这将替换发射器旁边的 OptiScaler.ini, 替换为为此游戏保存的 。"
+      "translation": "此前已为 {1} 保存配置 {0}。\n\n现在要应用吗？这会用该游戏的配置覆盖启动器目录中的 OptiScaler.ini。"
     },
     "RtssInstallHelp": {
       "source": "The frame limiter uses RivaTuner Statistics Server (RTSS), and it was not found on this PC.\n\nInstall RTSS (it comes with MSI Afterburner, or from guru3d.com), start it, then press Apply again.\n\nRTSS must be running while you play: it does the actual limiting.",
-      "translation": "未在此电脑上找到帧率限制器所需的 RivaTuner Statistics Server（RTSS）。\n\n安装并启动 RTSS（可随 MSI Afterburner 一同安装，或从 guru3d.com 下载），然后再次点击“应用”。\n\n游玩时必须保持 RTSS 运行；实际的帧率限制由它执行。"
+      "translation": "限帧功能需要 RivaTuner Statistics Server（RTSS），本机未找到 RTSS。\n\n安装并启动 RTSS（可随 MSI Afterburner 一起安装，或从 guru3d.com 下载），再点击“应用”。\n\n游戏期间请保持 RTSS 运行，否则限帧不会生效。"
     },
     "ShortcutInUse": {
       "source": "Already used by \"{0}\".",
-      "translation": "已经被\"{0}\"使用过"
+      "translation": "已被“{0}”占用。"
     },
     "BundleFolderCreated": {
       "source": "Created \"{0}\" next to the launcher. Put the required files inside it and click Install again.",
-      "translation": "创建了“ {0} ”, 位于发射装置旁边。 将所需的文件放在里面, 并再次单击安装 。"
+      "translation": "已在启动器旁创建“{0}”。请将所需文件放入其中，再点击“安装”。"
     },
     "EmptyBundleFolder": {
       "source": "Folder \"{0}\" is empty. Put the required files inside it first.",
-      "translation": "文件夹 {0} 为空。 请先将所需的文件放入它 。"
+      "translation": "文件夹“{0}”为空。请先将所需文件放入其中。"
     },
     "ClosingGameForReshade": {
       "source": "Closing {0} completely before copying ReShade files...",
-      "translation": "完全关闭{0} 之前复制 ReShade 文件..."
+      "translation": "复制 ReShade 文件前，正在完全关闭 {0}……"
     },
     "ReshadeCopyHelp": {
       "source": "Copied {0} required file(s) to:\n{1}\n\nNotes:\n1. Install ReShade (with Add-on support) on the game first; this button copies only the required files.\n2. Works on Direct3D 11 / 12 (GPU) and Direct3D 9 / 10 / OpenGL / Vulkan (CPU).\n3. In-game, open the ReShade menu and tick OptiCaptureDepth on (single-player games only).",
-      "translation": "收到{0}份所需文件,以便:\n{1}\n\n注:\n1. 在游戏上先安装 ReShade (加上添加支持); 此按钮只复制所需的文件 。\n2. 工程 Direct3D 11 / 12 (GPU和 Direct3D 9 / 10 / OpenGL / Vulkan (CPU).\n游戏中 打开 ReShade 和 选项菜单和 选项 OptiCaptureDepth 上(仅限单玩家游戏)"
+      "translation": "已将 {0} 个必需文件复制到：\n{1}\n\n注意：\n1. 请先为游戏安装支持 Add-on 的 ReShade；此按钮只会复制所需文件。\n2. 支持 Direct3D 11/12（GPU）以及 Direct3D 9/10、OpenGL、Vulkan（CPU）。\n3. 进入游戏后打开 ReShade 菜单，启用 OptiCaptureDepth（仅限单人游戏）。"
     },
     "ReshadeGameRelaunched": {
       "source": "{0} was closed and launched again from its executable.",
-      "translation": "{0}号已关闭,并再次从可执行文件中发射。"
+      "translation": "{0} 已关闭，并通过其可执行文件重新启动。"
     },
     "ReshadeGameStillRunning": {
       "source": "Warning: {0} was still running; close it and launch it again.",
-      "translation": "警告: {0} 还在运行中,关闭并再次发射。"
+      "translation": "警告：{0} 仍在运行。请将其关闭后重新启动。"
     },
     "ReshadeGameClosed": {
       "source": "{0} was closed; please launch it again.",
-      "translation": "{0}号已关闭,请再次发射。"
+      "translation": "{0} 已关闭，请重新启动游戏。"
     },
     "ReshadeCopyFailed": {
       "source": "Warning: {0} file(s) could not be copied.",
-      "translation": "警告: {0} 文件无法复制 。"
+      "translation": "警告：{0} 个文件复制失败。"
     },
     "ReshadeCopyAndRestart": {
       "source": "Copied {0} file(s) to {1} and restarted the game.",
-      "translation": "将{0}文件收集到 {1}, 并重新启动游戏 。"
+      "translation": "已将 {0} 个文件复制到 {1}，并重新启动游戏。"
     },
     "ReshadeCopyComplete": {
       "source": "Copied {0} file(s) to {1}.",
-      "translation": "已经收集 {0} 至 {1}."
+      "translation": "已将 {0} 个文件复制到 {1}。"
     },
     "VsyncChanged": {
       "source": "VSync: {0}. Restart the game to apply.",
-      "translation": "VSync: {0}。重新打开游戏以应用。"
+      "translation": "VSync：{0}。重启游戏后生效。"
     },
     "FrameGenerationChanged": {
       "source": "OptiScaler.ini: FGOutput = {0}, FGNvngxReplacement = {1}. Restart the game to use the change.",
@@ -1193,15 +1193,15 @@
     },
     "LimiterSummary": {
       "source": "{0} - {1} fps - {2}",
-      "translation": "{0} - {1} fps - {2}"
+      "translation": "限帧：{0} · {1} fps · {2}"
     },
     "RtssLimitSet": {
       "source": "RTSS limit set: {0} at {1} fps ({2}).",
-      "translation": "RTSS 设定了限制 : {0} 年 {1} fps ({2})."
+      "translation": "RTSS 已将限帧设为 {0}，当前为 {1} fps（{2}）。"
     },
     "RtssNotRunning": {
       "source": " RTSS is not running - start it before the game.",
-      "translation": " RTSS 不运行 - 在游戏前启动 。"
+      "translation": " RTSS 未运行，请在启动游戏前先启动 RTSS。"
     },
     "HostOverlayBilinear": {
       "source": "bilinear",
@@ -1225,19 +1225,19 @@
     },
     "WindowsGraphicsCaptureUnsupported": {
       "source": "Windows Graphics Capture is not supported on this system (Windows 10 1903 or newer is required).",
-      "translation": "该系统不支持Windows Graphics Capture号(需要10 1903号窗或更新)。"
+      "translation": "此系统不支持 Windows Graphics Capture（需要 Windows 10 1903 或更高版本）。"
     },
     "NoCaptureWindow": {
       "source": "No window to capture. Use --title \"part of the window title\", or switch to the game during the countdown.",
-      "translation": "无法捕捉窗口。 使用 --title “ 窗口标题的一部分 ”, 或者在倒计时时切换到游戏 。"
+      "translation": "未找到可捕获的窗口。请用 --title \"窗口标题的一部分\" 指定窗口，或在倒计时期间切回游戏。"
     },
     "CaptureInitializationFailed": {
       "source": "Initialisation failed. See OptiCaptureHost.log next to the exe.",
-      "translation": "初始化失败。 见 Exe 旁边 OptiCaptureHost.log 。"
+      "translation": "初始化失败。请查看程序目录中的 OptiCaptureHost.log。"
     },
     "UnexpectedHostError": {
       "source": "Unexpected error. See OptiCaptureHost.log next to the exe.",
-      "translation": "意外错误。 见 Exe 旁边 OptiCaptureHost.log 。"
+      "translation": "发生意外错误。请查看程序目录中的 OptiCaptureHost.log。"
     },
     "LauncherTitle": {
       "source": "OptiCaptureHost  -  by MK-JH",
@@ -1261,31 +1261,31 @@
     },
     "GameFramesCapture": {
       "source": "Game frames (capture)",
-      "translation": "游戏框架(捕捉)"
+      "translation": "游戏帧（捕获）"
     },
     "LooksCapped": {
       "source": "   · looks capped",
-      "translation": "   · 表面遮盖"
+      "translation": "   · 疑似被限帧"
     },
     "PresentedByTheHost": {
       "source": "Presented by the host",
-      "translation": "东道主提出"
+      "translation": "由采集端呈现"
     },
     "PresentsCountedByDxgi": {
       "source": "Presents counted by DXGI",
-      "translation": "价值DXGI美元的礼物"
+      "translation": "DXGI 帧呈现次数"
     },
     "TimeInsidePresent": {
       "source": "Time inside Present",
-      "translation": "内部时间"
+      "translation": "Present 耗时"
     },
     "CapturingStatus": {
       "source": "Capturing \"{0}\". {1} opens the OptiScaler menu, {2} shows this window.",
-      "translation": "获取 \"{0}\". {1} 打开 OptiScaler 菜单, {2} 显示此窗口。"
+      "translation": "正在捕获“{0}”。按 {1} 打开 OptiScaler 菜单，按 {2} 显示此窗口。"
     },
     "CaptureReadyTitle": {
       "source": "Ready: {0}",
-      "translation": "准备: {0}"
+      "translation": "就绪：{0}"
     },
     "PresentTiming": {
       "source": "{0} ms   · wait {1} ms",
@@ -1293,7 +1293,7 @@
     },
     "HostOverlayLabel": {
       "source": "{0} to {1}  ({2} · {3})",
-      "translation": "{0} 至 {1}  ({2} · {3})"
+      "translation": "从 {0} 到 {1}  ({2} · {3})"
     }
   }
 }
