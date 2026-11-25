@@ -21,7 +21,7 @@
 
 - 在本 fork 的 [构建工作流](https://github.com/xrbbm/OptiCaptureHostCN/actions/workflows/build.yml?query=branch%3Azh-cn) 中点 `Run workflow`，选择 `zh-cn`。推送到 `zh-cn` 也会自动构建。
 - 在成功运行的 **Artifacts** 下载 `OptiCaptureHost-zh-CN-win64`。其中的 ZIP 包含 Launcher、Host、许可证和本次构建的对应源代码；如需 OptiScaler 等运行时，请按下文另行安装。
-- `src/ui_strings.inc` 只登记本项目的界面文案。新增或改动的条目由 Actions 的本地翻译模型处理，不需要 API Key 或人工校对。编译成功后，译文自动保存到 `i18n/zh-CN.json`。文件名、配置键、第三方菜单和日志保持不变。
+- `src/ui_strings.inc` 登记本项目的界面文案。Actions 用本地模型自动翻译新增或改动的条目，不需要 API Key 或人工校对。`i18n/translate.mjs` 维护固定术语：品牌、硬件与 API 名称保留原文，功能文案优先使用“限帧”“帧生成”等玩家常用说法；其他句子仍可能有机翻措辞。编译通过后，译文自动保存到 `i18n/zh-CN.json`。
 - 产物的 `source/` 附带本次构建的译文；在该目录运行 `cmake -S . -B build -A x64 -DOC_ZH_CN_DIR=generated`，再运行 `cmake --build build --config Release` 可重新编译。
 
 ---
